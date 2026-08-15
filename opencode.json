@@ -1,0 +1,28 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": true
+    },
+    "serena": {
+      "type": "local",
+      "command": [
+        "C:\\Users\\marka\\.local\\bin\\serena.exe",
+        "start-mcp-server",
+        "--context",
+        "ide",
+        "--project-from-cwd"
+      ],
+      "cwd": "D:\\Personal Files\\Portfolio\\portfolio-web",
+      "enabled": true,
+      "timeout": 60000
+    }
+  }
+}
