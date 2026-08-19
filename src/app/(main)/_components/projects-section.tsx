@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Copy, ExternalLink, GitBranch, MoreVertical } from "lucide-react";
 
 import { SimpleIcon } from "@/components/simple-icon";
@@ -15,7 +17,7 @@ import { projects } from "@/data/projects";
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="py-16 md:py-20">
+    <section id="projects" className="scroll-mt-14 py-16 md:py-20">
       <div className="mx-auto w-full max-w-6xl px-4 md:px-8">
         <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">02 - Projects</p>
         <h2 className="font-heading mt-3 text-3xl font-semibold tracking-tight md:text-4xl">Featured work</h2>
@@ -24,7 +26,8 @@ export default function ProjectsSection() {
         </p>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {projects.map((project) => (
-            <Card key={project.id} className="group/project">
+            <Card key={project.id} className="relative transition-shadow group/project hover:shadow-md">
+              <Link href={`/projects/${project.id}`} aria-label={project.title} className="absolute inset-0 z-0" />
               <CardContent>
                 <div className="relative flex h-36 items-center justify-center rounded-lg bg-muted/50">
                   <SimpleIcon icon={project.icon} className="size-12 text-muted-foreground" />
@@ -35,7 +38,12 @@ export default function ProjectsSection() {
                 <CardAction>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${project.title}`}>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label={`Actions for ${project.title}`}
+                        className="relative z-10"
+                      >
                         <MoreVertical />
                       </Button>
                     </DropdownMenuTrigger>

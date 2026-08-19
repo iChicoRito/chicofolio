@@ -7,7 +7,7 @@ import TechStackSection from "./_components/tech-stack-section";
 
 export default function HomePage() {
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="flex min-h-svh flex-col bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-foreground)_7%,transparent)_1px,transparent_1px)] bg-[size:24px_24px]">
       <SiteHeader />
       <main className="flex-1">
         <HeroSection />

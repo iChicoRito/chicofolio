@@ -20,7 +20,15 @@ export default function HeroSection() {
           alt={`${profile.name} profile photo`}
           width={320}
           height={320}
-          className="size-56 rounded-[2.5rem] object-cover md:size-72"
+          className="size-56 rounded-[2.5rem] object-cover md:size-72 dark:hidden"
+          priority
+        />
+        <Image
+          src="/assets/img/profile-photo-1.png"
+          alt={`${profile.name} profile photo`}
+          width={320}
+          height={320}
+          className="hidden size-56 rounded-[2.5rem] object-cover md:size-72 dark:block"
           priority
         />
         <div className="flex min-w-0 flex-1 flex-col items-center gap-4 md:items-start">

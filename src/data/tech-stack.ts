@@ -9,6 +9,7 @@ import {
   siDeepseek,
   siExpo,
   siFigma,
+  siFlutter,
   siFramer,
   siHtml5,
   siJavascript,
@@ -100,6 +101,7 @@ export const techStackGroups: TechStackGroup[] = [
         img: "/assets/img/expo-logo.svg",
         darkInvert: true,
       },
+      { name: "Flutter", icon: siFlutter, description: "UI framework" },
     ],
   },
   {
