@@ -4,8 +4,11 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { techStackGroups } from "@/data/tech-stack";
 
 export function KpiStrip() {
+  const totalTech = techStackGroups.reduce((sum, group) => sum + group.items.length, 0);
+
   return (
     <div className="overflow-hidden rounded-xl bg-card shadow-xs ring-1 ring-foreground/10">
       <div className="grid divide-y *:data-[slot=card]:rounded-none *:data-[slot=card]:ring-0 md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-3">
@@ -15,12 +18,12 @@ export function KpiStrip() {
             <CardAction>
               <Badge className="bg-green-500/10 text-green-700 dark:bg-green-500/15 dark:text-green-300">
                 <ArrowUpRight />
-                2020–present
+                2023–present
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="text-2xl leading-none tracking-tight">5+</div>
+            <div className="text-2xl leading-none tracking-tight">3+</div>
             <div className="flex items-center gap-2 text-muted-foreground text-xs">
               <span>across design and development, end to end</span>
             </div>
@@ -38,7 +41,7 @@ export function KpiStrip() {
             </CardAction>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="text-2xl leading-none tracking-tight">12+</div>
+            <div className="text-2xl leading-none tracking-tight">{totalTech}+</div>
             <div className="flex items-center gap-2 text-muted-foreground text-xs">
               <span>React, Next.js, TypeScript, Figma…</span>
             </div>
@@ -56,7 +59,7 @@ export function KpiStrip() {
             </CardAction>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="text-2xl leading-none tracking-tight">120+</div>
+            <div className="text-2xl leading-none tracking-tight">10+</div>
             <div className="flex items-center gap-2 text-muted-foreground text-xs">
               <span>UI/UX, graphic, web & mobile projects</span>
             </div>
