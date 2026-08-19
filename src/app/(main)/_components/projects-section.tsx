@@ -28,8 +28,12 @@ export default function ProjectsSection() {
             <Card key={project.id} className="relative transition-shadow group/project hover:shadow-md">
               <Link href={`/projects/${project.id}`} aria-label={project.title} className="absolute inset-0 z-0" />
               <CardContent>
-                <div className="relative flex h-36 items-center justify-center rounded-lg bg-muted/50">
-                  <SimpleIcon icon={project.icon} className="size-12 text-muted-foreground" />
+                <div className="relative flex h-36 items-center justify-center overflow-hidden rounded-lg bg-muted/50">
+                  {project.coverImage ? (
+                    <img src={project.coverImage} alt={`${project.title} cover`} className="size-full object-cover" />
+                  ) : (
+                    <SimpleIcon icon={project.icon} className="size-12 text-muted-foreground" />
+                  )}
                 </div>
               </CardContent>
               <CardHeader>
