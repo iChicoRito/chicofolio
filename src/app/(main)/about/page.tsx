@@ -54,7 +54,7 @@ export default function AboutPage() {
               <ol className="relative mt-10 ml-3 space-y-12 border-l border-border pl-6">
                 {profile.experience.map((job) => (
                   <li key={job.role} className="relative">
-                    <span className="absolute top-1.5 -left-[27px] size-2.5 rounded-full bg-primary" />
+                    <span className="absolute top-1.5 -left-[30px] size-2.5 rounded-full bg-primary" />
                     <h3 className="font-heading text-lg font-semibold">{job.role}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
                       {job.company} | {job.period}
@@ -73,7 +73,7 @@ export default function AboutPage() {
               <h2 className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">Education</h2>
               <ol className="relative mt-10 ml-3 space-y-12 border-l border-border pl-6">
                 <li className="relative">
-                  <span className="absolute top-1.5 -left-[27px] size-2.5 rounded-full bg-primary" />
+                  <span className="absolute top-1.5 -left-[30px] size-2.5 rounded-full bg-primary" />
                   <h3 className="font-heading text-lg font-semibold">{profile.education.degree}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{profile.education.school}</p>
                   <p className="mt-1 text-sm text-muted-foreground">{profile.education.details}</p>

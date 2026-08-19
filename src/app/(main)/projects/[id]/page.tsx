@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ArrowLeft, ArrowRight, Check, CheckCircle2, type LucideIcon, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, ExternalLink, type LucideIcon, X } from "lucide-react";
 import type { SimpleIcon as SimpleIconType } from "simple-icons";
 
 import { SimpleIcon } from "@/components/simple-icon";
@@ -13,7 +13,9 @@ import { type CaseStudy, placeholderCaseStudy, projects } from "@/data/projects"
 
 import SiteHeader from "../../_components/site-header";
 
-const sections: { key: keyof CaseStudy | "problemSolution"; label: string }[] = [
+type ContentSectionKey = Exclude<keyof CaseStudy, "problemNotes" | "solutionNotes" | "designPrinciples">;
+
+const sections: { key: ContentSectionKey | "problemSolution"; label: string }[] = [
   { key: "overview", label: "Project Overview" },
   { key: "problemSolution", label: "Problem and Solution" },
   { key: "role", label: "Role & Responsibilities" },
@@ -25,68 +27,6 @@ const sections: { key: keyof CaseStudy | "problemSolution"; label: string }[] = 
   { key: "results", label: "Results / Outcome" },
   { key: "lessons", label: "Lessons Learned" },
 ];
-
-const problemNotes = [
-  { title: "Different ways to organize tasks", date: "No time, due time, or time range", icon: X },
-  { title: "Task creation should stay clear", date: "Support each schedule without adding confusion", icon: X },
-  { title: "Reminders must stay accurate", date: "Changes, completion, removal, and reopening", icon: X },
-  { title: "Due tasks need attention", date: "Clear, noticeable, and easy to act on", icon: X },
-] as const;
-
-const solutionNotes = [
-  { title: "Simple task journey", date: "Create, save, prepare reminders, receive alerts", icon: Check },
-  { title: "Three timing choices", date: "No Time, Due Time, or Time Range", icon: Check },
-  { title: "Reminders stay accurate", date: "Old reminders replaced whenever a task changes", icon: Check },
-  { title: "Recovery after reopening", date: "Restores needed reminders and shows due tasks together", icon: Check },
-] as const;
-
-const designProcessEntries = [
-  {
-    step: "01",
-    accent: "bg-green-600 dark:bg-green-400",
-    title: "Make time choices easy to understand",
-    meta: "No Time, Due Time, and Time Range — each reveals only what it needs",
-    badge: "Timing",
-    badgeClass:
-      "rounded-md border-green-600/50 bg-green-50 px-2.5 py-1 font-medium text-[10px] text-green-600 dark:border-green-800/50 dark:bg-green-500/10 dark:text-green-400",
-  },
-  {
-    step: "02",
-    accent: "bg-yellow-500 dark:bg-yellow-400",
-    title: "Keep one clear rule for changes",
-    meta: "Old reminders replaced on every save with the latest information",
-    badge: "Reliability",
-    badgeClass:
-      "rounded-md border-yellow-600/50 bg-yellow-50 px-2.5 py-1 font-medium text-[10px] text-yellow-700 dark:border-yellow-800/50 dark:bg-yellow-500/10 dark:text-yellow-300",
-  },
-  {
-    step: "03",
-    accent: "bg-yellow-500 dark:bg-yellow-400",
-    title: "Keep the task and the alert connected",
-    meta: "Due alert loads the latest saved task title, category, description, and notes",
-    badge: "Context",
-    badgeClass:
-      "rounded-md border-yellow-600/50 bg-yellow-50 px-2.5 py-1 font-medium text-[10px] text-yellow-700 dark:border-yellow-800/50 dark:bg-yellow-500/10 dark:text-yellow-300",
-  },
-  {
-    step: "04",
-    accent: "bg-yellow-500 dark:bg-yellow-400",
-    title: "Plan for interruptions",
-    meta: "Active due alert remembered across close, background, and reopen",
-    badge: "Resilience",
-    badgeClass:
-      "rounded-md border-yellow-600/50 bg-yellow-50 px-2.5 py-1 font-medium text-[10px] text-yellow-700 dark:border-yellow-800/50 dark:bg-yellow-500/10 dark:text-yellow-300",
-  },
-  {
-    step: "05",
-    accent: "bg-green-600 dark:bg-green-400",
-    title: "Use stronger phone behavior for urgent alerts",
-    meta: "Full-screen alarm with sound, vibration, and quick actions",
-    badge: "Attention",
-    badgeClass:
-      "rounded-md border-green-600/50 bg-green-50 px-2.5 py-1 font-medium text-[10px] text-green-600 dark:border-green-800/50 dark:bg-green-500/10 dark:text-green-400",
-  },
-] as const;
 
 export function generateStaticParams() {
   return projects.map((project) => ({ id: String(project.id) }));
@@ -110,6 +50,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
   // ponytail: shared placeholder until real case studies exist
   const caseStudy = project.caseStudy ?? placeholderCaseStudy;
+  const designProcessEntries = (caseStudy.designPrinciples ?? []).map((entry, index, entries) => {
+    const isAccent = index === 0 || index === entries.length - 1;
+
+    return {
+      ...entry,
+      step: String(index + 1).padStart(2, "0"),
+      accent: isAccent ? "bg-green-600 dark:bg-green-400" : "bg-yellow-500 dark:bg-yellow-400",
+      badgeClass: isAccent
+        ? "rounded-md border-green-600/50 bg-green-50 px-2.5 py-1 font-medium text-[10px] text-green-600 dark:border-green-800/50 dark:bg-green-500/10 dark:text-green-400"
+        : "rounded-md border-yellow-600/50 bg-yellow-50 px-2.5 py-1 font-medium text-[10px] text-yellow-700 dark:border-yellow-800/50 dark:bg-yellow-500/10 dark:text-yellow-300",
+    };
+  });
 
   const roleParts = caseStudy.role.split("\n\n");
   const roleItems = roleParts[0]
@@ -174,14 +126,41 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               </Link>
             </Button>
 
-            <div className="flex items-center gap-4">
-              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
-                <SimpleIcon icon={project.icon} className="size-7" />
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-4">
+                <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-muted text-muted-foreground">
+                  {project.id === 10 ? (
+                    <>
+                      <img
+                        src="/assets/icons/qyzen-dark.png"
+                        alt={`${project.title} icon`}
+                        className="size-full object-cover dark:hidden"
+                      />
+                      <img
+                        src="/assets/icons/qyzen-light.png"
+                        alt={`${project.title} icon`}
+                        className="hidden size-full object-cover dark:block"
+                      />
+                    </>
+                  ) : project.image ? (
+                    <img src={project.image} alt={`${project.title} icon`} className="size-full object-cover" />
+                  ) : (
+                    <SimpleIcon icon={project.icon} className="size-7" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">Case Study</p>
+                  <h1 className="font-heading mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
+                    {project.title}
+                  </h1>
+                </div>
               </div>
-              <div className="min-w-0">
-                <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">Case Study</p>
-                <h1 className="font-heading mt-2 text-2xl font-semibold tracking-tight md:text-3xl">{project.title}</h1>
-              </div>
+              <Button asChild className="shrink-0">
+                <a href={project.liveUrl ?? project.repositoryUrl} target="_blank" rel="noopener noreferrer">
+                  Visit Site
+                  <ExternalLink className="size-4" />
+                </a>
+              </Button>
             </div>
             <p className="mt-6 max-w-3xl text-lg text-muted-foreground">{project.description}</p>
             <div className="mt-5 flex flex-wrap gap-2">
@@ -226,15 +205,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                       <Card className="mt-6">
                         <CardContent>
                           <div className="relative flex h-48 items-center justify-center overflow-hidden rounded-lg bg-muted/50 md:h-64">
-                            {project.image ? (
-                              <img
-                                src={project.image}
-                                alt={`${project.title} preview`}
-                                className="size-full object-cover"
-                              />
-                            ) : (
-                              <OverviewIcon icon={project.icon} />
-                            )}
+                            <OverviewIcon icon={project.icon} />
                           </div>
                         </CardContent>
                         <CardHeader>
@@ -257,18 +228,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                     ) : s.key === "problemSolution" ? (
                       <div className="mt-6 grid items-stretch gap-6 md:grid-cols-2">
                         <div>
-                          {project.id === 7 ? (
+                          {caseStudy.problemNotes?.length ? (
                             <Card className="mt-3 h-full shadow-xs">
                               <CardHeader>
                                 <CardTitle>Problem</CardTitle>
                               </CardHeader>
                               <CardContent className="flex flex-col gap-3">
-                                {problemNotes.map((note) => (
+                                {caseStudy.problemNotes.map((note) => (
                                   <div key={note.title} className="flex items-start gap-4">
-                                    <note.icon className="size-4 text-muted-foreground" />
+                                    <X className="size-4 text-muted-foreground" />
                                     <div className="min-w-0">
                                       <div className="truncate font-medium text-sm leading-none">{note.title}</div>
-                                      <div className="text-muted-foreground text-xs">{note.date}</div>
+                                      <div className="text-muted-foreground text-xs">{note.detail}</div>
                                     </div>
                                   </div>
                                 ))}
@@ -281,18 +252,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                           )}
                         </div>
                         <div>
-                          {project.id === 7 ? (
+                          {caseStudy.solutionNotes?.length ? (
                             <Card className="mt-3 h-full shadow-xs">
                               <CardHeader>
                                 <CardTitle>Solution</CardTitle>
                               </CardHeader>
                               <CardContent className="flex flex-col gap-3">
-                                {solutionNotes.map((note) => (
+                                {caseStudy.solutionNotes.map((note) => (
                                   <div key={note.title} className="flex items-start gap-4">
-                                    <note.icon className="size-4 text-muted-foreground" />
+                                    <Check className="size-4 text-muted-foreground" />
                                     <div className="min-w-0">
                                       <div className="truncate font-medium text-sm leading-none">{note.title}</div>
-                                      <div className="text-muted-foreground text-xs">{note.date}</div>
+                                      <div className="text-muted-foreground text-xs">{note.detail}</div>
                                     </div>
                                   </div>
                                 ))}
@@ -317,12 +288,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                         </ul>
                         {roleNote && <p className="mt-6 max-w-3xl text-sm text-muted-foreground">{roleNote}</p>}
                       </div>
-                    ) : s.key === "designProcess" && project.id === 7 ? (
+                    ) : s.key === "designProcess" && designProcessEntries.length > 0 ? (
                       <Card className="mt-6 shadow-xs">
                         <CardHeader>
                           <CardTitle className="text-sm">Design Process</CardTitle>
                           <CardAction className="flex items-center gap-1 text-muted-foreground text-xs">
-                            5 Principles <ArrowRight className="size-4" />
+                            {designProcessEntries.length} Principles <ArrowRight className="size-4" />
                           </CardAction>
                         </CardHeader>
                         <CardContent className="flex flex-col gap-0">
@@ -344,7 +315,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                                     {entry.title}
                                   </div>
                                   <div className="truncate text-muted-foreground text-xs leading-none">
-                                    {entry.meta}
+                                    {entry.detail}
                                   </div>
                                 </div>
                                 <Badge variant="secondary" className={`shrink-0 ${entry.badgeClass}`}>
@@ -355,8 +326,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                           </div>
                         </CardContent>
                       </Card>
-                    ) : s.key === "keyFeatures" && project.id === 7 ? (
-                      <div className="mt-6 grid items-stretch gap-3 sm:grid-cols-2">
+                    ) : s.key === "keyFeatures" && keyFeatures.length > 0 ? (
+                      <div className="mt-6 grid auto-rows-fr items-stretch gap-3 sm:grid-cols-2">
                         {keyFeatures.map((feature) => (
                           <Card key={feature.step} size="sm" className="h-full">
                             <CardHeader>
@@ -373,7 +344,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                           </Card>
                         ))}
                       </div>
-                    ) : s.key === "challenges" && project.id === 7 ? (
+                    ) : s.key === "challenges" && challenges.length > 0 ? (
                       <div className="mt-6 grid gap-5">
                         {challenges.map((challenge) => (
                           <div key={challenge.title} className="border-primary/30 border-l-2 pl-4">
@@ -384,7 +355,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                           </div>
                         ))}
                       </div>
-                    ) : s.key === "finalProduct" && project.id === 7 ? (
+                    ) : s.key === "finalProduct" && finalProductEntries.length > 0 ? (
                       <ol className="relative mt-6 ml-3 space-y-8 border-l border-border pl-6">
                         {finalProductEntries.map((entry, index) => (
                           <li key={entry.title} className="relative">
@@ -400,7 +371,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                           </li>
                         ))}
                       </ol>
-                    ) : s.key === "results" && project.id === 7 ? (
+                    ) : s.key === "results" && resultOutcomes.length > 0 ? (
                       <div className="mt-6">
                         <Card className="h-full shadow-xs">
                           <CardHeader>
@@ -419,7 +390,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                           </CardContent>
                         </Card>
                       </div>
-                    ) : s.key === "lessons" && project.id === 7 ? (
+                    ) : s.key === "lessons" && lessonTotal > 0 ? (
                       <Card className="mt-6 h-full">
                         <CardHeader>
                           <CardTitle className="font-normal text-muted-foreground text-sm">Lessons learned</CardTitle>
@@ -494,19 +465,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                       techStackRows.length > 0 ? (
                         <Card className="mt-6">
                           <CardContent className="flex flex-col gap-4">
-                            {techStackRows.map((row) => (
-                              <div key={row.name} className="flex items-center justify-between">
-                                <div className="flex min-w-0 flex-col gap-0.5">
+                            <div className="divide-y">
+                              {techStackRows.map((row) => (
+                                <div key={row.name} className="flex min-w-0 flex-col gap-0.5 py-4 first:pt-0 last:pb-0">
                                   <span className="truncate font-medium text-foreground text-sm leading-none">
                                     {row.name}
                                   </span>
                                   <span className="font-normal text-muted-foreground text-sm">{row.description}</span>
                                 </div>
-                                <div className="flex size-9 shrink-0 items-center justify-center rounded-md border bg-background">
-                                  <SimpleIcon icon={project.icon} className="size-4" />
-                                </div>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                             <Separator />
                             <p className="whitespace-pre-line text-muted-foreground text-sm">
                               {techStackParagraphs[techStackParagraphs.length - 1]}

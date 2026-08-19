@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Copy, ExternalLink, GitBranch, MoreVertical } from "lucide-react";
+import { ExternalLink, GitBranch, MoreVertical } from "lucide-react";
 
 import { SimpleIcon } from "@/components/simple-icon";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +10,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { projects } from "@/data/projects";
@@ -48,18 +47,17 @@ export default function ProjectsSection() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-48" align="end">
-                      <DropdownMenuItem>
-                        <ExternalLink />
-                        View project
+                      <DropdownMenuItem asChild>
+                        <Link href={`/projects/${project.id}`}>
+                          <ExternalLink />
+                          View project
+                        </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <GitBranch />
-                        GitHub repo
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>
-                        <Copy />
-                        Copy link
+                      <DropdownMenuItem asChild>
+                        <a href={project.repositoryUrl} target="_blank" rel="noreferrer">
+                          <GitBranch />
+                          GitHub repo
+                        </a>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
