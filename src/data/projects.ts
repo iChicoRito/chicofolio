@@ -1,5 +1,5 @@
 import type { SimpleIcon as SimpleIconType } from "simple-icons";
-import { siExpo, siLaravel, siRocket, siTodoist } from "simple-icons";
+import { siExpo, siLaravel, siMarkdown, siRocket, siTodoist } from "simple-icons";
 
 export interface CaseStudyNote {
   title: string;
@@ -390,6 +390,104 @@ export const projects: Project[] = [
           title: "Make records preservable and restorable",
           detail: "Validated imports, exports, archive and restore flows keep academic data durable",
           badge: "Preservation",
+        },
+      ],
+    },
+  },
+  {
+    id: 11,
+    title: "Minto",
+    description:
+      "Minto is a deterministic, browser-local prompt enhancement workspace that turns rough instructions into structured Markdown prompts without a backend.",
+    tags: ["TypeScript", "Next.js", "Dexie"],
+    icon: siMarkdown,
+    repositoryUrl: "https://github.com/iChicoRito/prompt-enhancer",
+    image: "/assets/icons/minto-icon-v1.png",
+    coverImage:
+      "https://opengraph.githubassets.com/51e3ac0d9befa03c5a568b6ca8e5ef5e978bf4ac09d21ba4670211991b1e6743/iChicoRito/prompt-enhancer",
+    caseStudy: {
+      overview:
+        "Minto is a web application that turns rough, informal instructions into clear, structured prompts formatted in Markdown. The Prompt Enhancement Engine is its core capability — a deterministic, browser-local system that analyzes a user's raw text and generates a well-organized prompt without requiring a backend service.\n\nThe engine is built as a pure TypeScript module with no framework or storage dependencies. It runs entirely in the browser, supports 13 distinct task types across four categories, and offers three enhancement strengths. It is complemented by a simple web workspace where users can paste a prompt, choose options, and immediately view, edit, copy, and save the result. An optional AI enhancement path can be enabled when a secure enhancement endpoint is configured, but the deterministic engine works fully offline and is the default privacy-preserving path.",
+      problem:
+        "Vague or unstructured prompts lead to inconsistent results when working with language models and collaborators. Many users know what they want but struggle to express requirements, constraints, and verification steps in a consistent format. Cloud-only tools raise privacy concerns and fail when offline.\n\nInformal instructions mix goals, omit constraints, and vary widely in phrasing and punctuation. Teams need a predictable way to impose structure without sending sensitive content off-device or depending on network availability.",
+      solution:
+        "A local-first engine that imposes structure predictably. It extracts the actionable parts of a prompt, infers the type of work being requested, selects an appropriate template of sections, and renders consistent Markdown. Because the same input always produces the same output with no network call, users get fast, private, reproducible results.\n\nFor cases where more creative rewriting is desired, the same workspace can route the request to an optional AI service through a single, validated HTTPS endpoint with timeout, abort, and schema checks. Deterministic and AI paths stay separate, so privacy is the default and creativity is opt-in.",
+      role: "- Inspected the completed engine implementation across parsing, classification, templating, rule selection, and Markdown generation.\n- Traced the engine's integration with the workspace, state management, preferences, and local persistence.\n- Verified the absence of backend, API, database, and external service usage for the core deterministic flow.\n- Distinguished confirmed implementation facts from reasonable product interpretations.\n- Authored a portfolio-ready narrative that follows the required structure and avoids unsupported claims.",
+      designProcess:
+        "The analysis followed the implementation rather than a design proposal. It started from the engine's public contract — a single synchronous function that takes raw text and options and returns analysis, classification, and Markdown — and traced each pipeline stage.\n\nRaw text is normalized for whitespace and casing while vocabulary allow-lists extract an action verb, subject, technologies, constraints, and requirements. The classifier applies weighted-signal scoring with iterative suffix stripping for word variations, then derives confidence from both the strength of the top match and its distance from the next best match. Templates own structure as data: 13 task templates define light, standard, and detailed section orders as validated subsets. The workspace flow was followed from Enhance and Result tabs through state, validation, error handling, and local saving, and the optional AI contract was cross-checked against local preferences that control defaults without affecting engine purity.",
+      keyFeatures:
+        "Structured Slot Extraction\nIdentifies an opening action, a subject phrase, mentioned technologies from an explicit allow-list, preservation constraints, and bulleted or implied requirements from raw text.\n\nWeighted Classification with Confidence Gating\nScores text against curated signal tables for each task type, computes a 0–100 confidence score from top margin and absolute strength, falls back to the general category when evidence is weak or contested, and surfaces guidance when multiple types matched closely.\n\n13 Task Templates Across 4 Categories\nCovers development tasks like bug fixes, features, code review, refactoring, testing, and documentation; writing tasks like rewriting and summarization; research tasks like investigation and comparison; and design tasks like interface review and image prompts.\n\n24 Reusable Sections with Three Strengths\nLight returns a single polished sentence, standard adds requirements and verification, and detailed expands to a full structured document. The exact section order is owned by the template and validated as order-preserving subsets.\n\nSmart Section Selection\nDrops list-based sections when the corresponding extracted slot is empty, so a prompt without constraints does not generate an empty heading, while narrative sections receive default content downstream.\n\nLight Polish and Grammar Correction\nRewrites a prompt into a single clear sentence that honors constraints and preserves intent, with a separate grammar-only mode when no sections are selected.\n\nAuto-Detect or Manual Control\nUsers can let the engine infer the task type or choose it explicitly, toggle which of the five user-facing sections to include, and pick from 17 presets that preconfigure type, level, and sections.\n\nIntegrated Workspace\nA two-tab Enhance and Result experience with live character count, stale-state notice when controls change, progress indication with cancel, copy, export, and save actions, plus retry handling and dirty-state confirmation for edits.\n\nValidation and Safety Limits\nRejects empty prompts and enforces a 15,000-character maximum before enhancement begins, preventing oversized or empty submissions.\n\nLocal History and Library\nSuccessful results can be kept in on-device history and promoted to a personal library with folders and tags, both stored in IndexedDB and capped by a history-size preference.",
+      techStack:
+        "The case study remains human-readable, while this section records the actual technologies used:\n- TypeScript (strict) — Primary language for the engine and application, providing shared types for analysis results and templates and keeping the engine pure and predictable.\n- Next.js 16 (App Router) with React 19 — Hosts the workspace UI, static export for hosting, and a local development API route; the engine itself does not depend on either.\n- Prompt Engine module (pure TypeScript) — Self-contained pipeline of parser, classifier, templates, rules, and generator with no imports from React, Next.js, browser storage, or network code, which guarantees offline and testable behavior.\n- Zod — Validates enhancement requests and responses when the optional AI path is used, ensuring shape and size limits are enforced.\n- Zustand (with preferences provider) — Stores user preferences such as default enhancement level, default prompt type, included sections, and history limits, and persists them to cookies or local storage.\n- Dexie (IndexedDB wrapper) — Persists history, saved prompts, and folders entirely in the browser with no server database involved.\n- Tailwind CSS v4, shadcn/ui, Radix UI — Provide styling and accessible interface components for the workspace panels and controls.\n- Verification scripts (Node.js) — Hand-rolled harnesses that check parser, classifier, template, rules, generator, and full-pipeline behavior, including that the same input always yields byte-identical output.\n- PWA and static export tooling — Generate an installable offline build that excludes server-only routes, so the engine remains usable without a network.\n\nNo backend, database, or external service is required for the core deterministic flow. The optional AI path uses a single validated HTTPS endpoint with timeout, abort, and schema checks, and never runs unless explicitly configured.",
+      challenges:
+        "Ambiguity in natural language\nFree-form prompts vary widely in phrasing and punctuation. The solution normalizes whitespace and casing, uses allow-lists for verbs, technologies, and constraint phrases, and applies simple word-boundary matching rather than attempting full language understanding.\n\nOverconfident misclassification\nThin evidence or near ties could lead to the wrong specialization. The engine computes both the margin between the top two scores and the absolute evidence strength, rounds to a confidence value, maps it to high, medium, or low bands, falls back to the general template on low confidence, and surfaces guidance to choose manually.\n\nStemming trade-offs\nTo match variations like failing and fails without a full natural-language library, the classifier strips a small set of suffixes iteratively. This is intentionally limited and documented, so some irregular forms remain unmatched rather than guessed.\n\nAvoiding empty headings\nGenerating a heading with no content confuses users. The rule layer drops list-based sections when their extracted slot is empty while keeping narrative sections that receive default content downstream.\n\nKeeping templates consistent\nWith 13 templates each defining three levels, ordering mistakes would be hard to spot. Invariants are enforced: every level opens with Objective, contains no duplicates, and lighter levels are order-preserving subsets of stronger levels, checked by a validation routine across the registry.\n\nReproducibility vs. creativity\nUsers expect the same prompt to give the same result locally, but may also want AI creativity. The architecture separates the two: the deterministic path is synchronous and pure, while the AI path goes through a single validated HTTPS endpoint with timeout, abort, and schema checks.",
+      finalProduct:
+        "The user opens the home page and lands on the Enhance tab, which shows a greeting and a rounded input card. The workspace is ready immediately with no authentication required.\n\nThey paste a rough instruction, see the live character count toward the 15,000 limit, and optionally choose a task type, an enhancement level of light, standard, or detailed, and which sections to include. A preset can apply these choices in one click, and changing controls after enhancement marks the result as stale.\n\nSelecting Enhance runs the deterministic engine immediately or, when configured, calls the enhancement service with the chosen options. A progress indicator appears and the request can be canceled, with validation rejecting empty or oversized prompts before work begins.\n\nOn success the view switches to the Result tab. The generated Markdown appears in three interchangeable views: raw result, rendered preview, and editable Markdown; a badge indicates whether the result came from local rules or AI, and classification notes appear when confidence was low or multiple types matched.\n\nFrom the result the user can copy to clipboard, export as a Markdown file, re-enhance with updated input, or save to the local library. Saving and history pruning respect the history-size preference, edits are tracked as dirty state and confirmed before being replaced, and all history and library data stays on device.",
+      results:
+        "- Fully offline, private enhancement with no backend, database, or external service required for the core flow; engine isolation from framework, storage, and network imports confirms this.\n- Deterministic output: repeated calls with the same prompt and options produce byte-identical Markdown, verified by a dual-run byte-equality harness across parser, classifier, template, rules, generator, and full pipeline.\n- Real usage coverage with 13 task types, 24 sections, 17 presets, three levels, and five user-selectable sections, plus validation that rejects empty submissions and enforces the 15,000-character limit.\n- Local-first storage via IndexedDB keeps history and library available across sessions without a server, capped by a user preference.\n- No adoption numbers, performance benchmarks, or business impact figures are reported because none are established by the codebase itself.\n- Cross-browser offline behavior, accessibility beyond the component library defaults, and performance under the maximum character limit remain not physically tested.",
+      lessons:
+        "What worked\n- Strict separation between a pure engine and the surrounding application keeps behavior easy to reason about and verify.\n- Letting templates own structure as data and reserving rules for dropping empty list sections avoids reordering bugs and makes subset invariants straightforward.\n- An explicit allow-list approach is more maintainable than guessing intent and makes unsupported technologies visibly ignored.\n- Confidence gating with fallback to the general template builds trust compared to confidently choosing the wrong specialization.\n- A thorough harness with dual-run byte-equality checks catches subtle non-determinism that unit assertions alone miss.\n\nWhat could improve\n- Grow the technology and constraint allow-lists intentionally as new domains appear rather than hallucinating support.\n- Surface low-confidence and near-tie guidance more prominently in the workspace to encourage manual type selection.\n- Verify offline behavior, accessibility, and performance at the 15,000-character limit across browsers and devices.\n- Add clearer feedback when list-based sections are dropped due to empty slots so users understand why headings are absent.\n\nFuture considerations\n- Keep the deterministic path synchronous and pure while the optional AI path remains a single validated HTTPS endpoint with timeout and abort.\n- Consider PWA installability and static export as the default offline distribution, excluding server-only routes.\n- Preserve local-first history and library with user-capped preferences and portable export where appropriate.\n- Maintain template subset invariants with automated validation as new task types or sections are added.",
+      problemNotes: [
+        {
+          title: "Vague prompts, inconsistent results",
+          detail: "Unstructured instructions lead to unpredictable outputs",
+        },
+        {
+          title: "Hard to express completely",
+          detail: "Requirements, constraints, and verification steps are often missing",
+        },
+        {
+          title: "Privacy and offline risk",
+          detail: "Cloud-only tools expose content and fail without a network",
+        },
+        {
+          title: "No consistent format",
+          detail: "Teams lack a reproducible structure for prompts",
+        },
+      ],
+      solutionNotes: [
+        {
+          title: "Local-first deterministic engine",
+          detail: "Same input always produces same Markdown with no network call",
+        },
+        {
+          title: "Extract and infer structure",
+          detail: "Action, subject, technologies, constraints, and requirements",
+        },
+        {
+          title: "Template-driven Markdown",
+          detail: "13 types and 24 sections with light, standard, and detailed strengths",
+        },
+        {
+          title: "Validated optional AI path",
+          detail: "Single HTTPS endpoint with timeout, abort, and Zod checks when configured",
+        },
+      ],
+      designPrinciples: [
+        {
+          title: "Start from the public contract",
+          detail: "One synchronous function text plus options returns analysis and Markdown",
+          badge: "Contract",
+        },
+        {
+          title: "Normalize and allow-list",
+          detail: "Whitespace and casing normalized with explicit verb, tech, and constraint lists",
+          badge: "Parsing",
+        },
+        {
+          title: "Score with confidence gating",
+          detail: "Weighted signals and suffix stripping with margin and strength mapped to bands",
+          badge: "Classification",
+        },
+        {
+          title: "Templates own structure",
+          detail: "13 templates define light, standard, and detailed orders as validated subsets",
+          badge: "Structure",
+        },
+        {
+          title: "Rules handle only emptiness",
+          detail: "Drops list-based sections when slots are empty to avoid hollow headings",
+          badge: "Clarity",
         },
       ],
     },
