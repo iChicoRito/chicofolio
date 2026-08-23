@@ -205,7 +205,34 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                       <Card className="mt-6">
                         <CardContent>
                           <div className="relative flex h-48 items-center justify-center overflow-hidden rounded-lg bg-muted/50 md:h-64">
-                            <OverviewIcon icon={project.icon} />
+                            {project.bannerDark && project.bannerLight ? (
+                              <>
+                                <img
+                                  src={project.bannerDark}
+                                  alt={`${project.title} banner`}
+                                  className="size-full object-cover dark:hidden"
+                                />
+                                <img
+                                  src={project.bannerLight}
+                                  alt={`${project.title} banner`}
+                                  className="hidden size-full object-cover dark:block"
+                                />
+                              </>
+                            ) : project.banner ? (
+                              <img
+                                src={project.banner}
+                                alt={`${project.title} banner`}
+                                className="size-full object-cover"
+                              />
+                            ) : project.coverImage ? (
+                              <img
+                                src={project.coverImage}
+                                alt={`${project.title} cover`}
+                                className="size-full object-cover"
+                              />
+                            ) : (
+                              <OverviewIcon icon={project.icon} />
+                            )}
                           </div>
                         </CardContent>
                         <CardHeader>

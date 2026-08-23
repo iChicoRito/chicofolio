@@ -39,6 +39,9 @@ export interface Project {
   liveUrl?: string;
   image?: string;
   coverImage?: string;
+  banner?: string;
+  bannerDark?: string;
+  bannerLight?: string;
   caseStudy?: CaseStudy;
 }
 
@@ -68,6 +71,7 @@ export const projects: Project[] = [
     image: "/assets/icons/remindly.webp",
     coverImage:
       "https://opengraph.githubassets.com/11eb2d675aa8987a7710b3920a90f6396f0ca8281fc2412d2cf893527f4a653c/iChicoRito/RemindLy-Flutter",
+    banner: "/assets/banner/Banner - RemindLy.png",
     caseStudy: {
       overview:
         "RemindLy is a personal task and reminder app designed to help people remember what needs to be done and when it needs to happen.\n\nThe Tasks area is one of the main parts of RemindLy, alongside the home view, Spaces, and Profile. It brings together task creation, planning, notes, categories, and reminders in one place.\n\nThe feature is designed to keep working with information saved on the device. A person can create a task, choose when it should happen, receive reminders, and respond to an alarm without relying on an online account or internet connection.",
@@ -142,6 +146,7 @@ export const projects: Project[] = [
     image: "/assets/icons/spillr.webp",
     coverImage:
       "https://opengraph.githubassets.com/2036349ca693829a22084b1bd667c211079aa648b22cd2bac5c364bff05774d1/iChicoRito/Spillr-Expo",
+    banner: "/assets/banner/Banner - Spillr.png",
     caseStudy: {
       overview:
         "Spillr is a mobile conversation card game. This case study covers the completed journey from choosing a deck to playing a timed round, seeing the result, and returning to personal progress.\n\nThe implemented flow includes deck selection, preparation, card play, results, streak feedback, saved statistics, play history, sound, and local notifications. It is a local-first experience, so the core round does not depend on a server or an online account.\n\nThe product is designed to make a casual group activity feel quick to start, expressive while playing, and rewarding after each round.",
@@ -235,6 +240,7 @@ export const projects: Project[] = [
     image: "/assets/icons/cosmicx.webp",
     coverImage:
       "https://opengraph.githubassets.com/026f5f960aa9fcb86b012bc79f794320d2fbe31c589e0ee3b697521732d5b379/iChicoRito/Cosmic-X",
+    banner: "/assets/banner/Banner - CosmicX.png",
     caseStudy: {
       overview:
         "CosmicX is a browser-based space experience that turns the scale of the universe into something people can explore, shape, and understand. It brings together three connected modes: a Solar Simulator for hands-on experimentation, a Galaxy Creator for building a personal galaxy, and a Big Bang Timeline for moving through cosmic history.\n\nThe product is designed for people who are curious about space, including learners, visual thinkers, and visitors who want more than a static explanation. The completed implementation combines guided entry points with open-ended interaction, so a person can follow a structured story or spend time experimenting at their own pace.\n\nThis case study covers the completed journey from the title screen through each mode, including mode selection, guided tours, controls, responsive layouts, local saves, and visual scenes. It is a local-first experience with no backend, account system, or external service.",
@@ -310,6 +316,9 @@ export const projects: Project[] = [
     liveUrl: "https://qyzen.space/",
     coverImage:
       "https://opengraph.githubassets.com/29762ca625490081d1d9dd88f88b7ce813328964abb4362d779307d86902679c/iChicoRito/Qyzen-Laravel",
+    banner: "/assets/banner/Banner - Qyzen - Dark.png",
+    bannerDark: "/assets/banner/Banner - Qyzen - Dark.png",
+    bannerLight: "/assets/banner/Banner - Qyzen - Light.png",
     caseStudy: {
       overview:
         "Qyzen Learning Platform is a role-based learning workspace that brings administrators, educators, and students into one shared academic record system.\n\nAdministrators prepare the institutional structure and accounts, educators organize classes, assessments, scores, materials and announcements, and students study, complete server-graded assessments, and review their records. Each role opens a different home and navigation that matches its daily work, yet all operate on the same years, terms, sections, subjects, enrollment, assessments and scores.\n\nShared calendars, notifications, profiles and one-to-one conversations keep planning and communication connected without splitting the experience across separate tools.",
@@ -401,10 +410,11 @@ export const projects: Project[] = [
       "Minto is a deterministic, browser-local prompt enhancement workspace that turns rough instructions into structured Markdown prompts without a backend.",
     tags: ["TypeScript", "Next.js", "Dexie"],
     icon: siMarkdown,
-    repositoryUrl: "https://github.com/iChicoRito/prompt-enhancer",
+    repositoryUrl: "https://github.com/iChicoRito/minto",
     image: "/assets/icons/minto-icon-v1.png",
     coverImage:
-      "https://opengraph.githubassets.com/51e3ac0d9befa03c5a568b6ca8e5ef5e978bf4ac09d21ba4670211991b1e6743/iChicoRito/prompt-enhancer",
+      "https://opengraph.githubassets.com/51e3ac0d9befa03c5a568b6ca8e5ef5e978bf4ac09d21ba4670211991b1e6743/iChicoRito/minto",
+    banner: "/assets/banner/Banner - Minto.png",
     caseStudy: {
       overview:
         "Minto is a web application that turns rough, informal instructions into clear, structured prompts formatted in Markdown. The Prompt Enhancement Engine is its core capability — a deterministic, browser-local system that analyzes a user's raw text and generates a well-organized prompt without requiring a backend service.\n\nThe engine is built as a pure TypeScript module with no framework or storage dependencies. It runs entirely in the browser, supports 13 distinct task types across four categories, and offers three enhancement strengths. It is complemented by a simple web workspace where users can paste a prompt, choose options, and immediately view, edit, copy, and save the result. An optional AI enhancement path can be enabled when a secure enhancement endpoint is configured, but the deterministic engine works fully offline and is the default privacy-preserving path.",
