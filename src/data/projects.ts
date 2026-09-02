@@ -33,6 +33,8 @@ export interface Project {
   id: number;
   title: string;
   description: string;
+  role: string;
+  outcome: string;
   tags: string[];
   icon: SimpleIconType;
   repositoryUrl: string;
@@ -65,6 +67,8 @@ export const projects: Project[] = [
     title: "RemindLy",
     description:
       "RemindLy is a personal task and reminder app designed to help people remember what needs to be done and when it needs to happen.",
+    role: "Product design + mobile development",
+    outcome: "Offline reminders that stay accurate after tasks change.",
     tags: ["Flutter", "Dart", "Hive"],
     icon: siTodoist,
     repositoryUrl: "https://github.com/iChicoRito/RemindLy-Flutter",
@@ -140,6 +144,8 @@ export const projects: Project[] = [
     title: "Spillr",
     description:
       "Spillr is a mobile conversation card game that turns choosing a deck, playing a timed round, and seeing the result into one connected experience.",
+    role: "Product design + mobile development",
+    outcome: "A connected deck-to-result play loop with local progress.",
     tags: ["TypeScript", "React Native", "Expo"],
     icon: siExpo,
     repositoryUrl: "https://github.com/iChicoRito/Spillr",
@@ -233,6 +239,8 @@ export const projects: Project[] = [
     title: "CosmicX",
     description:
       "A browser-based space experience that turns the scale of the universe into something people can explore, shape, and understand.",
+    role: "Product design + frontend development",
+    outcome: "An interactive space experience with three learning modes.",
     tags: ["JavaScript", "Three.js", "Vite"],
     icon: siRocket,
     repositoryUrl: "https://github.com/iChicoRito/Cosmic-X",
@@ -310,6 +318,8 @@ export const projects: Project[] = [
     title: "Qyzen Learning Platform",
     description:
       "Role-based learning platform for academic institutions — administrators, educators, and students share one academic record system.",
+    role: "Product design + full-stack development",
+    outcome: "Role-scoped academic workflows in one shared record system.",
     tags: ["Laravel", "PHP", "MySQL"],
     icon: siLaravel,
     repositoryUrl: "https://github.com/iChicoRito/Qyzen-Laravel",
@@ -408,6 +418,8 @@ export const projects: Project[] = [
     title: "Minto",
     description:
       "Minto is a deterministic, browser-local prompt enhancement workspace that turns rough instructions into structured Markdown prompts without a backend.",
+    role: "Product design + frontend development",
+    outcome: "Deterministic prompt enhancement that works offline.",
     tags: ["TypeScript", "Next.js", "Dexie"],
     icon: siMarkdown,
     repositoryUrl: "https://github.com/iChicoRito/minto",

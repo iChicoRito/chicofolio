@@ -6,7 +6,7 @@ export default function ProjectsPage() {
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <ProjectsSection />
         <TechStackSection variant="wallet" />
       </main>

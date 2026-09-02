@@ -8,7 +8,7 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-[50svh] items-center justify-center overflow-hidden pb-8 pt-16 text-center md:pt-0 md:text-left"
+      className="relative flex min-h-[50svh] items-center justify-center overflow-hidden pt-16 pb-8 text-center md:pt-0 md:text-left"
     >
       <div
         aria-hidden
@@ -32,16 +32,18 @@ export default function HeroSection() {
           priority
         />
         <div className="flex min-w-0 flex-1 flex-col items-center gap-4 md:items-start">
-          <h1 className="font-heading w-full text-3xl font-medium tracking-tight md:text-5xl">{profile.name}</h1>
-          <p className="font-heading max-w-2xl text-base font-normal text-muted-foreground md:text-lg">
-            {profile.role}
+          <p className="font-medium text-muted-foreground text-sm uppercase tracking-[0.18em]">Design + development</p>
+          <h1 className="w-full font-heading font-medium text-3xl tracking-tight md:text-5xl">{profile.role}</h1>
+          <p className="max-w-2xl text-base text-muted-foreground md:text-lg">{profile.heroDescription}</p>
+          <p className="text-muted-foreground text-sm">
+            {profile.location} · {profile.availability}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
             <Button asChild size="lg">
-              <Link href="#projects">View Projects</Link>
+              <Link href="#projects">View selected work</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="#about">About Me</Link>
+              <Link href="#contact">Let's work together</Link>
             </Button>
           </div>
         </div>

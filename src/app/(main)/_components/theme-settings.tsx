@@ -54,7 +54,7 @@ export function ThemeSettings() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button size="icon" variant="ghost">
+        <Button size="icon" variant="ghost" aria-label="Open appearance settings">
           <Settings />
         </Button>
       </PopoverTrigger>

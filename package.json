@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test:portfolio": "node --test tests/portfolio-smoke.mjs",
     "lint": "biome lint",
     "format": "biome format --write",
     "check": "biome check",

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import type { LucideIcon } from "lucide-react";
 import type { SimpleIcon as SimpleIconType } from "simple-icons";
 
@@ -17,7 +19,13 @@ function TechIcon({ icon, color }: { icon: SimpleIconType | LucideIcon; color?: 
 
 function TechLogo({ item }: { item: TechStackItem }) {
   return item.img ? (
-    <img src={item.img} alt={item.name} className={cn("size-4", item.darkInvert && "dark:invert")} />
+    <Image
+      src={item.img}
+      alt={item.name}
+      width={16}
+      height={16}
+      className={cn("size-4", item.darkInvert && "dark:invert")}
+    />
   ) : (
     <TechIcon icon={item.icon} color={item.color} />
   );

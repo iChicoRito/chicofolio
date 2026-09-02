@@ -2,17 +2,55 @@
 
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+
 import { ThemeSettings } from "./theme-settings";
 
 export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 h-14 w-full border-b bg-background/80 backdrop-blur">
-      <div className="flex h-full items-center justify-between gap-4 px-4 md:px-8">
-        <Link href="/" className="flex min-w-0 items-center">
-          <span className="truncate font-heading font-semibold">ChicoFolio</span>
-        </Link>
-        <ThemeSettings />
-      </div>
-    </header>
+    <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:ring-2 focus:ring-ring"
+      >
+        Skip to main content
+      </a>
+      <header className="sticky top-0 z-50 h-14 w-full border-b bg-background/80 backdrop-blur">
+        <div className="flex h-full items-center justify-between gap-4 px-4 md:px-8">
+          <Link href="/" className="flex min-w-0 items-center">
+            <span className="truncate font-heading font-semibold">ChicoFolio</span>
+          </Link>
+          <nav aria-label="Primary navigation" className="hidden items-center gap-1 md:flex">
+            <Link
+              href="/#about"
+              className="rounded-md px-2 py-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              About
+            </Link>
+            <Link
+              href="/#projects"
+              className="rounded-md px-2 py-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Projects
+            </Link>
+            <Link
+              href="/#tech-stack"
+              className="rounded-md px-2 py-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Tech stack
+            </Link>
+          </nav>
+          <div className="ml-auto flex items-center gap-2">
+            <Button asChild size="sm" className="hidden sm:inline-flex">
+              <Link href="/#contact">Let's work together</Link>
+            </Button>
+            <Button asChild size="sm" variant="ghost" className="sm:hidden">
+              <Link href="/#contact">Contact</Link>
+            </Button>
+            <ThemeSettings />
+          </div>
+        </div>
+      </header>
+    </>
   );
 }

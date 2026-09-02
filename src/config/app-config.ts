@@ -8,6 +8,6 @@ export const APP_CONFIG = {
   copyright: `© ${currentYear}, ChicoFolio.`,
   meta: {
     title: "ChicoFolio",
-    description: "ChicoFolio is a portfolio of graphic design and full-stack development work.",
+    description: "ChicoFolio is Mark Adrianne Salunga's portfolio of product design and full-stack web/mobile work.",
   },
 };

@@ -1,12 +1,13 @@
 // ponytail: landing-local copy of analytics-kpi-strip, 3 portfolio stats (template untouched)
 
-import { ArrowUpRight } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { projects } from "@/data/projects";
 import { techStackGroups } from "@/data/tech-stack";
 
 export function KpiStrip() {
+  const liveDemoCount = projects.filter((project) => project.liveUrl).length;
+  const projectCount = projects.length;
   const totalTech = techStackGroups.reduce((sum, group) => sum + group.items.length, 0);
 
   return (
@@ -14,18 +15,17 @@ export function KpiStrip() {
       <div className="grid divide-y *:data-[slot=card]:rounded-none *:data-[slot=card]:ring-0 md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle className="font-normal text-sm">Years of Experience</CardTitle>
+            <CardTitle className="font-normal text-sm">Selected Projects</CardTitle>
             <CardAction>
               <Badge className="bg-green-500/10 text-green-700 dark:bg-green-500/15 dark:text-green-300">
-                <ArrowUpRight />
-                2023–present
+                Selected work
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="text-2xl leading-none tracking-tight">3+</div>
+            <div className="text-2xl leading-none tracking-tight">{projectCount}</div>
             <div className="flex items-center gap-2 text-muted-foreground text-xs">
-              <span>across design and development, end to end</span>
+              <span>web and mobile products with case studies</span>
             </div>
           </CardContent>
         </Card>
@@ -35,33 +35,31 @@ export function KpiStrip() {
             <CardTitle className="font-normal text-sm">Technologies Used</CardTitle>
             <CardAction>
               <Badge className="bg-green-500/10 text-green-700 dark:bg-green-500/15 dark:text-green-300">
-                <ArrowUpRight />
-                and growing
+                Current list
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="text-2xl leading-none tracking-tight">{totalTech}+</div>
+            <div className="text-2xl leading-none tracking-tight">{totalTech}</div>
             <div className="flex items-center gap-2 text-muted-foreground text-xs">
-              <span>React, Next.js, TypeScript, Figma…</span>
+              <span>design, frontend, backend, and AI tools</span>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-normal text-sm">Design & Dev Deliverables</CardTitle>
+            <CardTitle className="font-normal text-sm">Live Demos</CardTitle>
             <CardAction>
               <Badge className="bg-green-500/10 text-green-700 dark:bg-green-500/15 dark:text-green-300">
-                <ArrowUpRight />
-                this year
+                Public links
               </Badge>
             </CardAction>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="text-2xl leading-none tracking-tight">10+</div>
+            <div className="text-2xl leading-none tracking-tight">{liveDemoCount}</div>
             <div className="flex items-center gap-2 text-muted-foreground text-xs">
-              <span>UI/UX, graphic, web & mobile projects</span>
+              <span>linked from the selected project work</span>
             </div>
           </CardContent>
         </Card>

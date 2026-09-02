@@ -7,12 +7,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { APP_CONFIG } from "@/config/app-config";
 import { fontVars } from "@/lib/fonts/registry";
 import { PREFERENCE_DEFAULTS } from "@/lib/preferences/preferences-config";
+import { siteUrl } from "@/lib/site-url";
 import { ThemeBootScript } from "@/scripts/theme-boot";
 import { PreferencesStoreProvider } from "@/stores/preferences/preferences-provider";
 
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: siteUrl,
   title: APP_CONFIG.meta.title,
   description: APP_CONFIG.meta.description,
 };

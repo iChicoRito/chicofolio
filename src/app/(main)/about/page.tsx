@@ -12,7 +12,7 @@ export default function AboutPage() {
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="py-16 md:py-20">
           <div className="mx-auto w-full max-w-6xl px-4 md:px-8">
             <Button asChild variant="ghost" className="-ml-2 mb-8">

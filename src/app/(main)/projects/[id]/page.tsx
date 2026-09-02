@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ArrowLeft, ArrowRight, Check, CheckCircle2, ExternalLink, type LucideIcon, X } from "lucide-react";
+import type { Metadata } from "next";
 import type { SimpleIcon as SimpleIconType } from "simple-icons";
 
 import { SimpleIcon } from "@/components/simple-icon";
@@ -27,6 +29,28 @@ const sections: { key: ContentSectionKey | "problemSolution"; label: string }[] 
   { key: "results", label: "Results / Outcome" },
   { key: "lessons", label: "Lessons Learned" },
 ];
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const project = projects.find((item) => String(item.id) === id);
+
+  if (!project) {
+    return {};
+  }
+
+  const title = `${project.title} — ChicoFolio`;
+
+  return {
+    title,
+    description: project.description,
+    openGraph: {
+      title,
+      description: project.description,
+      type: "article",
+      images: project.banner ? [{ url: project.banner, alt: `${project.title} banner` }] : undefined,
+    },
+  };
+}
 
 export function generateStaticParams() {
   return projects.map((project) => ({ id: String(project.id) }));
@@ -104,6 +128,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
     .map((line) => line.slice(2));
   const resultOutcomes = resultItems.filter((item) => !item.startsWith("On August 17"));
 
+  const proofItems = [
+    { label: "Role", value: project.role },
+    { label: "Outcome", value: project.outcome },
+    { label: "Stack", value: project.tags.join(" · ") },
+  ];
+  const externalAction = project.liveUrl
+    ? { label: "Live demo", href: project.liveUrl }
+    : { label: "View repository", href: project.repositoryUrl };
+
   const techStackParagraphs = caseStudy.techStack.split("\n\n");
   const techStackRows = caseStudy.techStack
     .split("\n")
@@ -116,7 +149,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="py-16 md:py-20">
           <div className="mx-auto w-full max-w-6xl px-4 md:px-8">
             <Button asChild variant="ghost" className="-ml-2 mb-10">
@@ -126,24 +159,34 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               </Link>
             </Button>
 
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-center gap-4">
                 <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-muted text-muted-foreground">
                   {project.id === 10 ? (
                     <>
-                      <img
+                      <Image
                         src="/assets/icons/qyzen-dark.png"
                         alt={`${project.title} icon`}
+                        width={56}
+                        height={56}
                         className="size-full object-cover dark:hidden"
                       />
-                      <img
+                      <Image
                         src="/assets/icons/qyzen-light.png"
                         alt={`${project.title} icon`}
+                        width={56}
+                        height={56}
                         className="hidden size-full object-cover dark:block"
                       />
                     </>
                   ) : project.image ? (
-                    <img src={project.image} alt={`${project.title} icon`} className="size-full object-cover" />
+                    <Image
+                      src={project.image}
+                      alt={`${project.title} icon`}
+                      width={56}
+                      height={56}
+                      className="size-full object-cover"
+                    />
                   ) : (
                     <SimpleIcon icon={project.icon} className="size-7" />
                   )}
@@ -155,12 +198,22 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                   </h1>
                 </div>
               </div>
-              <Button asChild className="shrink-0">
-                <a href={project.liveUrl ?? project.repositoryUrl} target="_blank" rel="noopener noreferrer">
-                  Visit Site
-                  <ExternalLink className="size-4" />
-                </a>
-              </Button>
+              <div className="flex shrink-0 flex-wrap gap-2">
+                <Button asChild>
+                  <a href={externalAction.href} target="_blank" rel="noopener noreferrer">
+                    {externalAction.label}
+                    <ExternalLink className="size-4" />
+                  </a>
+                </Button>
+                {project.liveUrl ? (
+                  <Button asChild variant="outline">
+                    <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
+                      View repository
+                      <ExternalLink className="size-4" />
+                    </a>
+                  </Button>
+                ) : null}
+              </div>
             </div>
             <p className="mt-6 max-w-3xl text-lg text-muted-foreground">{project.description}</p>
             <div className="mt-5 flex flex-wrap gap-2">
@@ -170,6 +223,30 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 </Badge>
               ))}
             </div>
+
+            <dl className="mt-8 grid gap-5 border-border border-y py-6 sm:grid-cols-3">
+              {proofItems.map((item) => (
+                <div key={item.label} className="min-w-0">
+                  <dt className="font-medium text-muted-foreground text-xs uppercase tracking-widest">{item.label}</dt>
+                  <dd className="mt-2 text-sm leading-relaxed">{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <nav aria-label="Project sections" className="-mx-4 mt-8 overflow-x-auto border-border border-y md:hidden">
+              <div className="flex w-max min-w-full gap-2 px-4 py-3">
+                {sections.map((s, index) => (
+                  <Link
+                    key={s.key}
+                    href={`#${s.key}`}
+                    className="shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-muted-foreground text-sm transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    <span className="mr-2 font-medium text-primary">{String(index + 1).padStart(2, "0")}</span>
+                    {s.label}
+                  </Link>
+                ))}
+              </div>
+            </nav>
 
             <div className="mt-16 gap-16 md:grid md:grid-cols-[240px_1fr]">
               <aside className="hidden md:block">
@@ -207,27 +284,35 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                           <div className="relative flex h-48 items-center justify-center overflow-hidden rounded-lg bg-muted/50 md:h-64">
                             {project.bannerDark && project.bannerLight ? (
                               <>
-                                <img
+                                <Image
                                   src={project.bannerDark}
                                   alt={`${project.title} banner`}
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, 768px"
                                   className="size-full object-cover dark:hidden"
                                 />
-                                <img
+                                <Image
                                   src={project.bannerLight}
                                   alt={`${project.title} banner`}
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, 768px"
                                   className="hidden size-full object-cover dark:block"
                                 />
                               </>
                             ) : project.banner ? (
-                              <img
+                              <Image
                                 src={project.banner}
                                 alt={`${project.title} banner`}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 768px"
                                 className="size-full object-cover"
                               />
                             ) : project.coverImage ? (
-                              <img
+                              <Image
                                 src={project.coverImage}
                                 alt={`${project.title} cover`}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 768px"
                                 className="size-full object-cover"
                               />
                             ) : (
