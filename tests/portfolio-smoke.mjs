@@ -10,11 +10,27 @@ async function getPage(pathname) {
   return html;
 }
 
-test("home exposes the focused value proposition and contact path", async () => {
+test("home exposes the profile identity, image, and contact path", async () => {
   const html = await getPage("/");
-  assert.match(html, /I turn complex workflows into clear, useful products\./);
+  assert.match(html, /Mark Adrianne Salunga/);
+  assert.match(html, /profile-photo\.png/);
   assert.match(html, /Let's work together|Let’s work together/);
   assert.match(html, /#contact/);
+});
+
+test("contact section exposes configured social links", async () => {
+  const html = await getPage("/");
+
+  assert.match(html, /href="https:\/\/github\.com\/iChicoRito"/);
+  assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/salungamarkadrianne\/"/);
+  assert.match(html, />GitHub</);
+  assert.match(html, />LinkedIn</);
+  assert.match(html, /Find me online/);
+  assert.match(html, /Social profiles/);
+  assert.match(html, /public links/);
+  assert.match(html, /aria-label="Open GitHub profile in a new tab"/);
+  assert.match(html, /aria-label="Open LinkedIn profile in a new tab"/);
+  assert.match(html, /rel="noopener noreferrer"/);
 });
 
 test("project details expose a useful action label", async () => {

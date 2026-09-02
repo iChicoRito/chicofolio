@@ -20,26 +20,6 @@ export default function SiteHeader() {
           <Link href="/" className="flex min-w-0 items-center">
             <span className="truncate font-heading font-semibold">ChicoFolio</span>
           </Link>
-          <nav aria-label="Primary navigation" className="hidden items-center gap-1 md:flex">
-            <Link
-              href="/#about"
-              className="rounded-md px-2 py-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              About
-            </Link>
-            <Link
-              href="/#projects"
-              className="rounded-md px-2 py-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Projects
-            </Link>
-            <Link
-              href="/#tech-stack"
-              className="rounded-md px-2 py-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Tech stack
-            </Link>
-          </nav>
           <div className="ml-auto flex items-center gap-2">
             <Button asChild size="sm" className="hidden sm:inline-flex">
               <Link href="/#contact">Let's work together</Link>

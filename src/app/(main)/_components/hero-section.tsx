@@ -32,8 +32,7 @@ export default function HeroSection() {
           priority
         />
         <div className="flex min-w-0 flex-1 flex-col items-center gap-4 md:items-start">
-          <p className="font-medium text-muted-foreground text-sm uppercase tracking-[0.18em]">Design + development</p>
-          <h1 className="w-full font-heading font-medium text-3xl tracking-tight md:text-5xl">{profile.role}</h1>
+          <h1 className="w-full font-heading font-medium text-3xl tracking-tight md:text-5xl">{profile.name}</h1>
           <p className="max-w-2xl text-base text-muted-foreground md:text-lg">{profile.heroDescription}</p>
           <p className="text-muted-foreground text-sm">
             {profile.location} · {profile.availability}

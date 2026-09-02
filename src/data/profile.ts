@@ -4,6 +4,16 @@ export const profile = {
   heroDescription: "Product designer and full-stack developer building thoughtful web, mobile, and visual experiences.",
   location: "Cavite, Philippines",
   availability: "Available for opportunities",
+  socials: [
+    {
+      label: "GitHub",
+      href: "https://github.com/iChicoRito",
+    },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/salungamarkadrianne/",
+    },
+  ],
   bio: "I'm a multidisciplinary designer and full-stack developer focused on creating clean, functional, and user-friendly digital products. I work across graphic design, UI/UX, web and mobile development, and also handle simple AI automations to streamline basic tasks and workflows. I enjoy combining design and development to turn ideas into polished products that look good, work well, and solve real problems.",
   aboutDetails:
     "Hi, I'm passionate about creating digital experiences that are intuitive, useful, and enjoyable to use. I work across graphic design, UI/UX, and full-stack development, building both web and mobile applications with modern technologies. Being involved in both design and development allows me to take ideas from early concepts to polished, fully deployed products while keeping the user experience at the center of every decision.",

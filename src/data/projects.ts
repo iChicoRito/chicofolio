@@ -423,6 +423,7 @@ export const projects: Project[] = [
     tags: ["TypeScript", "Next.js", "Dexie"],
     icon: siMarkdown,
     repositoryUrl: "https://github.com/iChicoRito/minto",
+    liveUrl: "https://minto-enhancer.vercel.app",
     image: "/assets/icons/minto-icon-v1.png",
     coverImage:
       "https://opengraph.githubassets.com/51e3ac0d9befa03c5a568b6ca8e5ef5e978bf4ac09d21ba4670211991b1e6743/iChicoRito/minto",
