@@ -12,6 +12,14 @@ afterEach(() => {
 });
 
 describe("ContactForm", () => {
+  it("keeps the honeypot from being populated by browser autofill", () => {
+    render(<ContactForm />);
+
+    const honeypot = screen.getByLabelText("Website");
+    expect(honeypot).toHaveAttribute("readOnly");
+    expect(honeypot).toHaveAttribute("autoComplete", "new-password");
+  });
+
   it("submits JSON once and announces success", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ ok: true, code: "sent", reference: "email-id" }), {

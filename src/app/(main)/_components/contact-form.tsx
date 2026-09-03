@@ -116,7 +116,7 @@ export default function ContactForm() {
       </div>
       <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
         <label htmlFor="contact-website">Website</label>
-        <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="new-password" readOnly />
       </div>
       <div className="flex flex-wrap items-center gap-4">
         <Button type="submit" disabled={locked}>
