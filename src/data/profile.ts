@@ -13,6 +13,10 @@ export const profile = {
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/salungamarkadrianne/",
     },
+    {
+      label: "AppBuilders PH",
+      href: "https://www.appbuildersph.com/makers/iChicoRito",
+    },
   ],
   bio: "I'm a multidisciplinary designer and full-stack developer focused on creating clean, functional, and user-friendly digital products. I work across graphic design, UI/UX, web and mobile development, and also handle simple AI automations to streamline basic tasks and workflows. I enjoy combining design and development to turn ideas into polished products that look good, work well, and solve real problems.",
   aboutDetails:
