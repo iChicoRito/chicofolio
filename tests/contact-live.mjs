@@ -11,23 +11,21 @@ const verificationApiKey = required("RESEND_VERIFICATION_API_KEY");
 const origin = new URL(baseUrl).origin;
 const runId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-async function submit(email, cookie) {
+async function submit(email) {
   const response = await fetch(`${baseUrl}/api/contact`, {
     method: "POST",
     headers: {
       origin,
       "content-type": "application/json",
-      ...(cookie ? { cookie } : {}),
     },
     body: JSON.stringify({
       name: `Contact E2E ${runId}`,
       email,
       message: `Live contact delivery verification ${runId}.`,
-      website: "",
     }),
   });
   const body = await response.json();
-  return { response, body, cookie: response.headers.get("set-cookie")?.split(";", 1)[0] };
+  return { response, body };
 }
 
 async function waitForDelivered(reference) {
@@ -48,29 +46,19 @@ async function waitForDelivered(reference) {
 }
 
 const emailA = `contact-e2e-${runId}@example.com`;
-const emailB = `contact-e2e-new-${runId}@example.com`;
 const first = await submit(emailA);
 assert.equal(first.response.status, 201);
 assert.equal(first.body.code, "sent");
 assert.ok(first.body.reference);
-assert.ok(first.cookie);
 
-const sameEmailNewDevice = await submit(emailA);
-assert.equal(sameEmailNewDevice.response.status, 409);
-assert.equal(sameEmailNewDevice.body.code, "duplicate");
-
-const sameDeviceNewEmail = await submit(emailB, first.cookie);
-assert.equal(sameDeviceNewEmail.response.status, 409);
-assert.equal(sameDeviceNewEmail.body.code, "duplicate");
-
-const newDeviceAndEmail = await submit(emailB);
-assert.equal(newDeviceAndEmail.response.status, 201);
-assert.equal(newDeviceAndEmail.body.code, "sent");
-assert.ok(newDeviceAndEmail.body.reference);
+const second = await submit(emailA);
+assert.equal(second.response.status, 201);
+assert.equal(second.body.code, "sent");
+assert.ok(second.body.reference);
 
 const [deliveredA, deliveredB] = await Promise.all([
   waitForDelivered(first.body.reference),
-  waitForDelivered(newDeviceAndEmail.body.reference),
+  waitForDelivered(second.body.reference),
 ]);
 assert.equal(deliveredA.last_event, "delivered");
 assert.equal(deliveredB.last_event, "delivered");

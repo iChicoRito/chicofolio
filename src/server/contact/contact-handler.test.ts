@@ -10,7 +10,6 @@ function request(body: unknown, headers: Record<string, string> = {}) {
     headers: {
       origin: "https://portfolio.example",
       "content-type": "application/json",
-      "x-vercel-forwarded-for": "203.0.113.10",
       ...headers,
     },
     body: JSON.stringify(body),
@@ -18,50 +17,38 @@ function request(body: unknown, headers: Record<string, string> = {}) {
 }
 
 describe("handleContactPost", () => {
-  it("returns 201 and sets the anonymous device cookie", async () => {
+  it("returns 201 and submits normalized data", async () => {
     const submit = vi.fn().mockResolvedValue({ kind: "sent", reference: "email-id" });
     const response = await handleContactPost(
-      request({ name: "Visitor", email: "VISITOR@example.com", message: "A useful inquiry.", website: "" }),
+      request({ name: "Visitor", email: "VISITOR@example.com", message: "A useful inquiry." }),
       submit,
-      () => "device-id",
     );
 
     expect(response.status).toBe(201);
     await expect(response.json()).resolves.toEqual({ ok: true, code: "sent", reference: "email-id" });
-    expect(response.cookies.get("chicofolio-contact-device")?.value).toBe("device-id");
-    expect(submit).toHaveBeenCalledWith(expect.objectContaining({ email: "visitor@example.com" }), {
-      deviceId: "device-id",
-      ipAddress: "203.0.113.10",
+    expect(submit).toHaveBeenCalledWith({
+      name: "Visitor",
+      email: "visitor@example.com",
+      message: "A useful inquiry.",
     });
   });
 
-  it("returns 409 on duplicate without setting a new device cookie", async () => {
-    const submit = vi.fn().mockResolvedValue({ kind: "duplicate" });
-    const response = await handleContactPost(
-      request({ name: "Visitor", email: "visitor@example.com", message: "A useful inquiry.", website: "" }),
-      submit,
-      () => "device-id",
-    );
+  it("allows repeated submissions", async () => {
+    const submit = vi.fn().mockResolvedValue({ kind: "sent", reference: "email-id" });
+    const body = { name: "Visitor", email: "visitor@example.com", message: "A useful inquiry." };
 
-    expect(response.status).toBe(409);
-    await expect(response.json()).resolves.toEqual({ ok: false, code: "duplicate" });
-  });
+    const first = await handleContactPost(request(body), submit);
+    const second = await handleContactPost(request(body), submit);
 
-  it("returns 429 with retry-after on rate limit", async () => {
-    const submit = vi.fn().mockResolvedValue({ kind: "rate_limited" });
-    const response = await handleContactPost(
-      request({ name: "Visitor", email: "visitor@example.com", message: "A useful inquiry.", website: "" }),
-      submit,
-    );
-
-    expect(response.status).toBe(429);
-    expect(response.headers.get("retry-after")).toBe("3600");
+    expect(first.status).toBe(201);
+    expect(second.status).toBe(201);
+    expect(submit).toHaveBeenCalledTimes(2);
   });
 
   it("returns 503 when the submission is unavailable", async () => {
     const submit = vi.fn().mockResolvedValue({ kind: "unavailable" });
     const response = await handleContactPost(
-      request({ name: "Visitor", email: "visitor@example.com", message: "A useful inquiry.", website: "" }),
+      request({ name: "Visitor", email: "visitor@example.com", message: "A useful inquiry." }),
       submit,
     );
 
@@ -71,7 +58,7 @@ describe("handleContactPost", () => {
   it("returns 503 when the submission throws", async () => {
     const submit = vi.fn().mockRejectedValue(new Error("boom"));
     const response = await handleContactPost(
-      request({ name: "Visitor", email: "visitor@example.com", message: "A useful inquiry.", website: "" }),
+      request({ name: "Visitor", email: "visitor@example.com", message: "A useful inquiry." }),
       submit,
     );
 
@@ -93,10 +80,10 @@ describe("handleContactPost", () => {
     expect(submit).not.toHaveBeenCalled();
   });
 
-  it("returns 400 on Zod validation failure", async () => {
+  it("returns 400 on validation failure", async () => {
     const submit = vi.fn();
     const response = await handleContactPost(
-      request({ name: "M", email: "visitor@example.com", message: "A useful inquiry.", website: "" }),
+      request({ name: "M", email: "visitor@example.com", message: "A useful inquiry." }),
       submit,
     );
 
@@ -116,10 +103,8 @@ describe("handleContactPost", () => {
     );
     const wrong = await handleContactPost(
       request(
-        { name: "Visitor", email: "visitor@example.com", message: "A useful inquiry.", website: "" },
-        {
-          origin: "https://evil.example",
-        },
+        { name: "Visitor", email: "visitor@example.com", message: "A useful inquiry." },
+        { origin: "https://evil.example" },
       ),
       submit,
     );
@@ -151,7 +136,7 @@ describe("handleContactPost", () => {
   it("returns 413 when the actual UTF-8 body exceeds 8192 despite a lying content-length", async () => {
     const submit = vi.fn();
     const response = await handleContactPost(
-      request({ name: "Visitor", email: "visitor@example.com", message: "é".repeat(6000), website: "" }),
+      request({ name: "Visitor", email: "visitor@example.com", message: "é".repeat(6000) }),
       submit,
     );
 
@@ -172,30 +157,5 @@ describe("handleContactPost", () => {
 
     expect(response.status).toBe(415);
     expect(submit).not.toHaveBeenCalled();
-  });
-
-  it("reuses an existing device cookie instead of issuing a new one", async () => {
-    const submit = vi.fn().mockResolvedValue({ kind: "sent", reference: "email-id" });
-    const response = await handleContactPost(
-      new NextRequest("https://portfolio.example/api/contact", {
-        method: "POST",
-        headers: {
-          origin: "https://portfolio.example",
-          "content-type": "application/json",
-          "x-vercel-forwarded-for": "203.0.113.10",
-          cookie: "chicofolio-contact-device=existing-device",
-        },
-        body: JSON.stringify({ name: "Visitor", email: "visitor@example.com", message: "A useful inquiry." }),
-      }),
-      submit,
-      () => "fresh-device",
-    );
-
-    expect(response.status).toBe(201);
-    expect(submit).toHaveBeenCalledWith(expect.anything(), {
-      deviceId: "existing-device",
-      ipAddress: "203.0.113.10",
-    });
-    expect(response.cookies.get("chicofolio-contact-device")).toBeUndefined();
   });
 });

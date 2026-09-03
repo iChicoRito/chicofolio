@@ -9,24 +9,21 @@ describe("contactSubmissionSchema", () => {
         name: "  Mark Visitor  ",
         email: "  VISITOR@Example.COM  ",
         message: "  A useful project inquiry.  ",
-        website: "",
       }),
     ).toEqual({
       name: "Mark Visitor",
       email: "visitor@example.com",
       message: "A useful project inquiry.",
-      website: "",
     });
   });
 
   it.each([
-    { name: "M", email: "visitor@example.com", message: "A useful message", website: "" },
-    { name: "Mark", email: "not-an-email", message: "A useful message", website: "" },
-    { name: "Mark", email: "visitor@example.com", message: "short", website: "" },
-    { name: "Mark\nBcc: victim@example.com", email: "visitor@example.com", message: "A useful message", website: "" },
-    { name: "Mark", email: "visitor@example.com", message: "A useful message", website: "bot value" },
-    { name: "Mark", email: "visitor@example.com", message: "A useful message", website: "", extra: true },
-  ])("rejects invalid or bot-shaped input %#", (input) => {
+    { name: "M", email: "visitor@example.com", message: "A useful message" },
+    { name: "Mark", email: "not-an-email", message: "A useful message" },
+    { name: "Mark", email: "visitor@example.com", message: "short" },
+    { name: "Mark\nBcc: victim@example.com", email: "visitor@example.com", message: "A useful message" },
+    { name: "Mark", email: "visitor@example.com", message: "A useful message", extra: true },
+  ])("rejects invalid input %#", (input) => {
     expect(contactSubmissionSchema.safeParse(input).success).toBe(false);
   });
 });

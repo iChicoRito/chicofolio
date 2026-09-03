@@ -6,18 +6,17 @@ const submission = {
   name: "Visitor <script>",
   email: "visitor@example.com",
   message: "Hello <script>alert(1)</script>\nSecond line",
-  website: "",
 };
 
 describe("createContactMailer", () => {
-  it("sends escaped HTML, plain text, reply-to, and idempotency", async () => {
+  it("sends escaped HTML, plain text, and reply-to", async () => {
     const send = vi.fn().mockResolvedValue({ data: { id: "email-id" }, error: null });
     const mailer = createContactMailer(send, {
       fromEmail: "contact@mail.example.com",
       toEmail: "owner@example.com",
     });
 
-    await expect(mailer.send(submission, "contact/digest")).resolves.toEqual({ messageId: "email-id" });
+    await expect(mailer.send(submission)).resolves.toEqual({ messageId: "email-id" });
     expect(send).toHaveBeenCalledWith(
       expect.objectContaining({
         from: "ChicoFolio <contact@mail.example.com>",
@@ -26,7 +25,6 @@ describe("createContactMailer", () => {
         text: expect.stringContaining("Hello <script>alert(1)</script>"),
         html: expect.not.stringContaining("<script>alert(1)</script>"),
       }),
-      { idempotencyKey: "contact/digest" },
     );
   });
 
@@ -37,6 +35,6 @@ describe("createContactMailer", () => {
       toEmail: "owner@example.com",
     });
 
-    await expect(mailer.send(submission, "contact/digest")).rejects.toThrow("Email delivery was not accepted.");
+    await expect(mailer.send(submission)).rejects.toThrow("Email delivery was not accepted.");
   });
 });

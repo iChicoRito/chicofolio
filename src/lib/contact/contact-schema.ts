@@ -10,7 +10,6 @@ export const contactSubmissionSchema = z
       .refine((value) => !/[\r\n]/.test(value), "Name cannot contain line breaks."),
     email: z.string().trim().toLowerCase().email("Enter a valid email address.").max(254),
     message: z.string().trim().min(10, "Message must be at least 10 characters.").max(5000),
-    website: z.string().max(0).optional().default(""),
   })
   .strict();
 

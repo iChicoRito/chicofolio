@@ -47,7 +47,6 @@ export default function ContactForm() {
           name: String(data.get("name") ?? ""),
           email: String(data.get("email") ?? ""),
           message: String(data.get("message") ?? ""),
-          website: String(data.get("website") ?? ""),
         }),
       });
       const code = await readCode(response);
@@ -55,14 +54,6 @@ export default function ContactForm() {
       if (response.ok && code === "sent") {
         form.reset();
         setState({ kind: "sent", message: "Thanks — your message was sent." });
-        return;
-      }
-      if (response.status === 409) {
-        setState({ kind: "error", message: "This browser or email has already sent a message." });
-        return;
-      }
-      if (response.status === 429) {
-        setState({ kind: "error", message: "Too many attempts. Please try again later." });
         return;
       }
       setState({ kind: "error", message: "Your message could not be sent. Please try again." });
@@ -113,10 +104,6 @@ export default function ContactForm() {
           disabled={locked}
           required
         />
-      </div>
-      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
-        <label htmlFor="contact-website">Website</label>
-        <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="new-password" readOnly />
       </div>
       <div className="flex flex-wrap items-center gap-4">
         <Button type="submit" disabled={locked}>

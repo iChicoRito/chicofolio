@@ -12,12 +12,13 @@ afterEach(() => {
 });
 
 describe("ContactForm", () => {
-  it("keeps the honeypot from being populated by browser autofill", () => {
+  it("renders only the contact fields", () => {
     render(<ContactForm />);
 
-    const honeypot = screen.getByLabelText("Website");
-    expect(honeypot).toHaveAttribute("readOnly");
-    expect(honeypot).toHaveAttribute("autoComplete", "new-password");
+    expect(screen.getByLabelText("Name")).toBeInTheDocument();
+    expect(screen.getByLabelText("Email")).toBeInTheDocument();
+    expect(screen.getByLabelText("Message")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Website")).not.toBeInTheDocument();
   });
 
   it("submits JSON once and announces success", async () => {
@@ -45,60 +46,9 @@ describe("ContactForm", () => {
       name: "New Visitor",
       email: "visitor@example.com",
       message: "A useful project inquiry.",
-      website: "",
     });
     expect(await screen.findByRole("status")).toHaveTextContent("Thanks — your message was sent.");
     expect(screen.getByRole("button", { name: "Message sent" })).toBeDisabled();
-  });
-
-  it("shows the duplicate message and preserves values on 409", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(JSON.stringify({ ok: false, code: "duplicate" }), {
-        status: 409,
-        headers: { "content-type": "application/json" },
-      }),
-    );
-    vi.stubGlobal("fetch", fetchMock);
-    const user = userEvent.setup();
-    render(<ContactForm />);
-
-    await user.type(screen.getByLabelText("Name"), "New Visitor");
-    await user.type(screen.getByLabelText("Email"), "visitor@example.com");
-    await user.type(screen.getByLabelText("Message"), "A useful project inquiry.");
-    const form = screen.getByRole("button", { name: "Send message" }).closest("form");
-    if (!(form instanceof HTMLFormElement)) throw new Error("Contact form element is missing from the DOM.");
-    fireEvent.submit(form);
-
-    expect(await screen.findByRole("alert")).toHaveTextContent("This browser or email has already sent a message.");
-    expect(screen.getByLabelText("Name")).toHaveValue("New Visitor");
-    expect(screen.getByLabelText("Email")).toHaveValue("visitor@example.com");
-    expect(screen.getByLabelText("Message")).toHaveValue("A useful project inquiry.");
-    expect(screen.getByRole("button", { name: "Send message" })).toBeEnabled();
-  });
-
-  it("shows a retry-later message and preserves values on 429", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(JSON.stringify({ ok: false, code: "rate_limited" }), {
-        status: 429,
-        headers: { "content-type": "application/json" },
-      }),
-    );
-    vi.stubGlobal("fetch", fetchMock);
-    const user = userEvent.setup();
-    render(<ContactForm />);
-
-    await user.type(screen.getByLabelText("Name"), "New Visitor");
-    await user.type(screen.getByLabelText("Email"), "visitor@example.com");
-    await user.type(screen.getByLabelText("Message"), "A useful project inquiry.");
-    const form = screen.getByRole("button", { name: "Send message" }).closest("form");
-    if (!(form instanceof HTMLFormElement)) throw new Error("Contact form element is missing from the DOM.");
-    fireEvent.submit(form);
-
-    expect(await screen.findByRole("alert")).toHaveTextContent("Too many attempts. Please try again later.");
-    expect(screen.getByLabelText("Name")).toHaveValue("New Visitor");
-    expect(screen.getByLabelText("Email")).toHaveValue("visitor@example.com");
-    expect(screen.getByLabelText("Message")).toHaveValue("A useful project inquiry.");
-    expect(screen.getByRole("button", { name: "Send message" })).toBeEnabled();
   });
 
   it("shows a generic retry message and re-enables the button when fetch rejects", async () => {
