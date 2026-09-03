@@ -1,15 +1,11 @@
-"use client";
-
 import { ExternalLink, Link2 } from "lucide-react";
 import { siGithub } from "simple-icons";
 
 import { SimpleIcon } from "@/components/simple-icon";
-import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { profile } from "@/data/profile";
+
+import ContactForm from "./contact-form";
 
 const socialIcons = {
   GitHub: siGithub,
@@ -46,31 +42,7 @@ export default function ContactSection() {
           </p>
         </div>
 
-        <form className="mt-10 max-w-3xl space-y-6" onSubmit={(event) => event.preventDefault()}>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="contact-name">Name</Label>
-              <Input id="contact-name" name="name" placeholder="Your name" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="contact-email">Email</Label>
-              <Input id="contact-email" name="email" type="email" placeholder="you@example.com" required />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="contact-message">Message</Label>
-            <Textarea
-              id="contact-message"
-              name="message"
-              placeholder="Tell me a little about what you are building."
-              rows={6}
-              required
-            />
-          </div>
-          <div className="flex flex-wrap items-center gap-4">
-            <Button type="submit">Send message</Button>
-          </div>
-        </form>
+        <ContactForm />
 
         <div className="mt-12 grid items-start gap-8 border-border border-t pt-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-12">
           <div className="max-w-sm">
