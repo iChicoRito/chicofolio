@@ -44,6 +44,16 @@ test("project details expose project-specific metadata", async () => {
   assert.match(html, /<title>RemindLy — ChicoFolio<\/title>/);
 });
 
+test("contact section exposes an accessible working-form contract", async () => {
+  const html = await getPage("/");
+  assert.match(html, /id="contact-name"/);
+  assert.match(html, /autocomplete="name"/);
+  assert.match(html, /id="contact-email"/);
+  assert.match(html, /type="email"/);
+  assert.match(html, /id="contact-message"/);
+  assert.match(html, />Send message</);
+});
+
 test("SEO routes expose sitemap entries and robots sitemap", async () => {
   const [sitemapResponse, robotsResponse] = await Promise.all([
     fetch(`${baseUrl}/sitemap.xml`),
