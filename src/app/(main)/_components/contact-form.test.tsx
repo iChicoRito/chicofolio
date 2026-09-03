@@ -27,9 +27,9 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText("Email"), "visitor@example.com");
     await user.type(screen.getByLabelText("Message"), "A useful project inquiry.");
     const form = screen.getByRole("button", { name: "Send message" }).closest("form");
-    expect(form).not.toBeNull();
-    fireEvent.submit(form!);
-    fireEvent.submit(form!);
+    if (!(form instanceof HTMLFormElement)) throw new Error("Contact form element is missing from the DOM.");
+    fireEvent.submit(form);
+    fireEvent.submit(form);
 
     expect(screen.getByRole("button", { name: /Sending/ })).toBeDisabled();
     await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
@@ -58,8 +58,8 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText("Email"), "visitor@example.com");
     await user.type(screen.getByLabelText("Message"), "A useful project inquiry.");
     const form = screen.getByRole("button", { name: "Send message" }).closest("form");
-    expect(form).not.toBeNull();
-    fireEvent.submit(form!);
+    if (!(form instanceof HTMLFormElement)) throw new Error("Contact form element is missing from the DOM.");
+    fireEvent.submit(form);
 
     expect(await screen.findByRole("alert")).toHaveTextContent("This browser or email has already sent a message.");
     expect(screen.getByLabelText("Name")).toHaveValue("New Visitor");
@@ -83,8 +83,8 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText("Email"), "visitor@example.com");
     await user.type(screen.getByLabelText("Message"), "A useful project inquiry.");
     const form = screen.getByRole("button", { name: "Send message" }).closest("form");
-    expect(form).not.toBeNull();
-    fireEvent.submit(form!);
+    if (!(form instanceof HTMLFormElement)) throw new Error("Contact form element is missing from the DOM.");
+    fireEvent.submit(form);
 
     expect(await screen.findByRole("alert")).toHaveTextContent("Too many attempts. Please try again later.");
     expect(screen.getByLabelText("Name")).toHaveValue("New Visitor");
@@ -103,8 +103,8 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText("Email"), "visitor@example.com");
     await user.type(screen.getByLabelText("Message"), "A useful project inquiry.");
     const form = screen.getByRole("button", { name: "Send message" }).closest("form");
-    expect(form).not.toBeNull();
-    fireEvent.submit(form!);
+    if (!(form instanceof HTMLFormElement)) throw new Error("Contact form element is missing from the DOM.");
+    fireEvent.submit(form);
 
     expect(await screen.findByRole("alert")).toHaveTextContent("Your message could not be sent. Please try again.");
     expect(screen.getByRole("button", { name: "Send message" })).toBeEnabled();
@@ -127,9 +127,9 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText("Email"), "visitor@example.com");
     await user.type(screen.getByLabelText("Message"), "A useful project inquiry.");
     const form = screen.getByRole("button", { name: "Send message" }).closest("form");
-    expect(form).not.toBeNull();
-    fireEvent.submit(form!);
-    fireEvent.submit(form!);
+    if (!(form instanceof HTMLFormElement)) throw new Error("Contact form element is missing from the DOM.");
+    fireEvent.submit(form);
+    fireEvent.submit(form);
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
     deferred.resolve?.(
