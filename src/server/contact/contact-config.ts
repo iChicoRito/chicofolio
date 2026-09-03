@@ -14,15 +14,15 @@ const environmentSchema = z.object({
 });
 
 export function getContactConfig(environment: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env) {
-  const parsed = environmentSchema.parse(environment);
+  const { RESEND_API_KEY, ...parsedRest } = environmentSchema.parse(environment);
 
   return {
-    resendApiKey: parsed.RESEND_API_KEY,
-    toEmail: parsed.CONTACT_TO_EMAIL,
-    fromEmail: parsed.CONTACT_FROM_EMAIL,
-    dedupeSecret: parsed.CONTACT_DEDUPE_SECRET,
-    redisNamespace: parsed.CONTACT_REDIS_NAMESPACE,
-    redisUrl: parsed.UPSTASH_REDIS_REST_URL,
-    redisToken: parsed.UPSTASH_REDIS_REST_TOKEN,
+    resendApiKey: RESEND_API_KEY,
+    toEmail: parsedRest.CONTACT_TO_EMAIL,
+    fromEmail: parsedRest.CONTACT_FROM_EMAIL,
+    dedupeSecret: parsedRest.CONTACT_DEDUPE_SECRET,
+    redisNamespace: parsedRest.CONTACT_REDIS_NAMESPACE,
+    redisUrl: parsedRest.UPSTASH_REDIS_REST_URL,
+    redisToken: parsedRest.UPSTASH_REDIS_REST_TOKEN,
   } as const;
 }
