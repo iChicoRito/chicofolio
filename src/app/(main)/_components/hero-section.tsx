@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Download } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { profile } from "@/data/profile";
 
@@ -43,6 +45,12 @@ export default function HeroSection() {
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link href="#contact">Let's work together</Link>
+            </Button>
+            <Button asChild size="lg" variant="ghost">
+              <a href="/resume.pdf" download="Salunga-Resume.pdf">
+                <Download aria-hidden="true" className="size-4" />
+                Download Resume
+              </a>
             </Button>
           </div>
         </div>
