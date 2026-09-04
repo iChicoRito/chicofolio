@@ -70,6 +70,30 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-16 md:mt-20">
+              <h2 className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">Personal Experience</h2>
+              <p className="mt-3 max-w-3xl text-muted-foreground leading-relaxed">
+                Self-directed AI practice alongside formal roles — two years of learning to work with AI, not just chat
+                with it.
+              </p>
+              <ol className="relative mt-10 ml-3 space-y-12 border-l border-border pl-6">
+                {profile.personalExperience.map((item) => (
+                  <li key={item.title} className="relative">
+                    <span className="absolute top-1.5 -left-[30px] size-2.5 rounded-full bg-primary" />
+                    <h3 className="font-heading text-lg font-semibold">{item.title}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {item.context} | {item.period}
+                    </p>
+                    <ul className="mt-3 list-disc space-y-1 pl-4 text-muted-foreground">
+                      {item.points.map((point) => (
+                        <li key={point}>{point}</li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="mt-16 md:mt-20">
               <h2 className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">Education</h2>
               <ol className="relative mt-10 ml-3 space-y-12 border-l border-border pl-6">
                 <li className="relative">

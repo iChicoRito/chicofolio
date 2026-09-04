@@ -53,6 +53,38 @@ export const profile = {
       ],
     },
   ],
+  personalExperience: [
+    {
+      title: "Learning to Use AI Properly",
+      context: "Internship",
+      period: "2024",
+      points: [
+        "Learned to properly use AI as an intern in 2024, building a habit of deliberate, task-oriented prompting",
+        "Started applying AI to real design and development tasks instead of one-off questions",
+      ],
+    },
+    {
+      title: "Prompt Engineering Foundations",
+      context: "Self-directed learning",
+      period: "2025",
+      points: [
+        "Improved basic prompt engineering through daily, hands-on practice",
+        "Learned to break tasks down clearly so models produce more reliable, useful output",
+      ],
+    },
+    {
+      title: "Agentic Workflows & Loop Engineering",
+      context: "Self-directed learning",
+      period: "2026 – Present",
+      points: [
+        "Learned agentic workflows this year, delegating multi-step tasks to parallel agents and sub-agents",
+        "Leveled up to better prompt engineering and loop engineering for iterative, self-correcting runs",
+        "Gained practical knowledge of LLMs across agent harnesses including Codex, Claude Code, OpenCode, DeepSeek, and Hermes Agent, with SKILLs that extend native workflows",
+        "Automating basic, repetitive tasks to free up time for design and development work",
+        "Work primarily with OpenAI GPT and Anthropic Claude, plus other modern frontier models via APIs and custom providers",
+      ],
+    },
+  ],
   education: {
     degree: "Bachelor of Science in Information Technology",
     school: "National College of Science and Technology (NCST)",
