@@ -29,6 +29,11 @@ export default async function DesignGalleryPage({ params }: { params: Promise<{ 
   const category = designCategories.find((item) => item.slug === slug);
   if (!category) notFound();
   const items = designProjects.filter((project) => project.category === category.slug);
+  const isPortrait = category.slug === "amway-flyers";
+  const tileAspect = isPortrait ? "aspect-[9/16]" : "aspect-square";
+  const gridCols = isPortrait
+    ? "mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    : "mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-3";
 
   return (
     <div className="flex min-h-svh flex-col">
@@ -47,7 +52,7 @@ export default async function DesignGalleryPage({ params }: { params: Promise<{ 
             <p className="mt-4 max-w-2xl text-base text-muted-foreground">
               {category.description} · {items.length} designs
             </p>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className={gridCols}>
               {items.map((project) => (
                 <Dialog key={project.id}>
                   <DialogTrigger asChild>
@@ -56,7 +61,7 @@ export default async function DesignGalleryPage({ params }: { params: Promise<{ 
                       aria-label={`Open ${project.title} fullscreen`}
                       className="group/design-card relative block w-full overflow-hidden rounded-xl bg-card text-left outline-none ring-1 ring-foreground/10 transition-shadow hover:shadow-md focus-visible:ring-3 focus-visible:ring-ring/50"
                     >
-                      <div className="relative aspect-square overflow-hidden rounded-xl bg-muted/50">
+                      <div className={`relative overflow-hidden rounded-xl bg-muted/50 ${tileAspect}`}>
                         <Image
                           src={project.src}
                           alt={project.alt}
