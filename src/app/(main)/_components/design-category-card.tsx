@@ -14,7 +14,7 @@ type DesignCategoryCardProps = {
 
 export default function DesignCategoryCard({ category, count }: DesignCategoryCardProps) {
   return (
-    <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-md">
+    <Card className="relative flex h-full flex-col overflow-hidden transition-shadow hover:shadow-md">
       <CardContent className="p-0">
         <div className="relative aspect-square overflow-hidden bg-muted/50">
           <Image
@@ -30,7 +30,7 @@ export default function DesignCategoryCard({ category, count }: DesignCategoryCa
         <h3 className="font-heading font-medium text-base leading-snug">
           <Link
             href={category.href}
-            className="underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="underline-offset-4 after:absolute after:inset-0 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {category.title}
           </Link>
@@ -40,7 +40,7 @@ export default function DesignCategoryCard({ category, count }: DesignCategoryCa
         </CardDescription>
       </CardHeader>
       <CardFooter className="border-t-0 bg-transparent pt-0">
-        <Button asChild size="sm">
+        <Button asChild size="sm" className="relative z-10">
           <Link href={category.href} aria-label={`View Designs: ${category.title}`}>
             View Designs
             <ArrowRight aria-hidden="true" />
