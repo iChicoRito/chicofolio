@@ -3,6 +3,7 @@ import { projects } from "@/data/projects";
 
 import DesignProjectGrid from "./design-project-grid";
 import ProjectCard from "./project-card";
+import UiuxProjectGrid from "./uiux-project-grid";
 
 export default function ProjectsSection() {
   return (
@@ -14,6 +15,7 @@ export default function ProjectsSection() {
             <TabsList aria-label="Project categories" className="ml-auto shrink-0">
               <TabsTrigger value="development">Development</TabsTrigger>
               <TabsTrigger value="design">Design</TabsTrigger>
+              <TabsTrigger value="uiux">UIUX</TabsTrigger>
             </TabsList>
           </div>
           <h2 className="mt-3 font-heading font-semibold text-3xl tracking-tight md:text-4xl">Featured work</h2>
@@ -29,6 +31,9 @@ export default function ProjectsSection() {
           </TabsContent>
           <TabsContent value="design" className="mt-12">
             <DesignProjectGrid />
+          </TabsContent>
+          <TabsContent value="uiux" className="mt-12">
+            <UiuxProjectGrid />
           </TabsContent>
         </Tabs>
       </div>

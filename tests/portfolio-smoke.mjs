@@ -67,3 +67,25 @@ test("SEO routes expose sitemap entries and robots sitemap", async () => {
   assert.match(sitemap, /\/about/);
   assert.match(robots, /\/sitemap\.xml/);
 });
+
+test("home exposes the UIUX tab with both app covers", async () => {
+  const html = await getPage("/");
+  assert.match(html, />UIUX</);
+  assert.match(html, /\/assets\/remindly\/RemindLy\.png/);
+  assert.match(html, /\/assets\/spillr\/Spillr\.png/);
+});
+
+test("uiux/remindly renders every screen at natural ratio", async () => {
+  const html = await getPage("/uiux/remindly");
+  assert.match(html, /<title>RemindLy — ChicoFolio<\/title>/);
+  assert.match(html, /Remindly-Screens \(1\)\.png/);
+  assert.match(html, /Remindly-Screens \(23\)\.png/);
+  assert.match(html, /Back to projects/);
+});
+
+test("uiux/spillr renders every screen at natural ratio", async () => {
+  const html = await getPage("/uiux/spillr");
+  assert.match(html, /<title>Spillr — ChicoFolio<\/title>/);
+  assert.match(html, /Spillr-Screens \(28\)\.png/);
+  assert.match(html, /Back to projects/);
+});
