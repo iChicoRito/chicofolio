@@ -524,6 +524,8 @@ export const projects: Project[] = [
     outcome: "One private vault on your own device for notes, files, links, and passwords.",
     tags: ["Tauri", "React", "Rust"],
     icon: siTauri,
+    repositoryUrl: "https://github.com/iChicoRito/Kivo-Vault",
+    liveUrl: "https://kivo-vault.vercel.app/",
     image: "/assets/kivo/Logo - Blue.png",
     imageDark: "/assets/kivo/Logo - White.png",
     banner: "/assets/banner/Banner - Kivo.png",
