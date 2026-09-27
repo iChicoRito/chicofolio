@@ -63,7 +63,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form className="mt-10 max-w-3xl space-y-6" onSubmit={handleSubmit}>
+    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="contact-name">Name</Label>

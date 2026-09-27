@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project cards: clean and interactive</title>
+  <style>
+:root { color-scheme: light dark; --bg: #fbfaf8; --paper: #fff; --line: #dedbd5; --text: #191918; --muted: #68645f; }
+@media (prefers-color-scheme: dark) { :root { --bg: #1f1e1d; --paper: #22211f; --line: #393735; --text: #f3f2ef; --muted: #aaa6a0; } }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; line-height: 1.55; }
+main { width: min(960px, calc(100vw - 32px)); margin: 0 auto; padding: 56px 0 96px; }
+h1 { font-size: clamp(28px, 5vw, 44px); margin: 0 0 12px; }
+section { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+.cols { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 8px; font-size: 13px; }
+.img { aspect-ratio: 2/1; border-radius: 10px; border: 1px dashed var(--line); display: grid; place-items: center; color: var(--muted); position: relative; }
+.muted { color: var(--muted); }
+table { width: 100%; border-collapse: collapse; } td { border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; }
+code { background: color-mix(in srgb, var(--line) 50%, transparent); padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Project cards: clean and interactive</h1>
+  <p class="muted">Project cards in the home Projects section and on /projects: less clutter, one clear click target, calm hover motion.</p>
+
+  <section class="cols">
+    <div>
+      <b>Before</b>
+      <div class="card">
+        <div class="img" style="aspect-ratio:16/7">banner (cropped)</div>
+        <p>RemindLy<br /><span class="muted">Outcome text</span><br /><small>ROLE</small><br />Product design + mobile<br />[Flutter] [Dart] [Hive]<br />[Read the story] [View repository]</p>
+      </div>
+    </div>
+    <div>
+      <b>After</b>
+      <div class="card">
+        <div class="img">full 2:1 banner <span style="position:absolute;top:6px;right:6px">↗</span></div>
+        <p style="padding:0 8px"><span class="muted">Flutter · Dart · Hive</span><br /><b>RemindLy</b><br /><span class="muted">Outcome text</span></p>
+        <p style="padding:0 8px;display:flex;justify-content:space-between">Read the story → <span class="muted">(View repository ↗)</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Changes</h2>
+    <table>
+      <tr><td>Layout</td><td>A framed card with an inset image at the banners' real 2:1 shape, so nothing is cropped. The tech names become a small line above the title. The "Role" block is removed; it is still shown on the detail page.</td></tr>
+      <tr><td>Clicking</td><td>The whole card opens the project story (a stretched title link). The live demo or repository link stays a separate small pill above it. Keyboard focus rings the whole card.</td></tr>
+      <tr><td>Motion</td><td>Card lift and shadow, cursor spotlight (kept), slow image zoom, a corner arrow badge that fades in, and the "Read the story" arrow slides. All turned off for visitors who prefer reduced motion.</td></tr>
+      <tr><td>Design and UIUX cards</td><td>Same framed style and hover motion. Their links stay as they are, so the existing tests still pass.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Files and checks</h2>
+    <p>Files: <code>project-card.tsx</code>, <code>design-category-card.tsx</code>, <code>uiux-project-card.tsx</code>.</p>
+    <p>Checks: tsc, biome, tests, build, and screenshots.</p>
+  </section>
+</main>
+</body>
+</html>

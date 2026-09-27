@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home sections polish and motion</title>
+  <!-- Live visual plan: https://plan.agent-native.com/plans/plan-b7b123ab3c5546d7 -->
+  <style>
+:root { color-scheme: light dark; --bg: #fbfaf8; --paper: #fff; --line: #dedbd5; --text: #191918; --muted: #68645f; }
+@media (prefers-color-scheme: dark) { :root { --bg: #1f1e1d; --paper: #22211f; --line: #393735; --text: #f3f2ef; --muted: #aaa6a0; } }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; line-height: 1.55; }
+main { width: min(1040px, calc(100vw - 32px)); margin: 0 auto; padding: 56px 0 96px; }
+h1 { font-size: clamp(28px, 5vw, 48px); line-height: 1.05; margin: 0 0 12px; }
+.lede { color: var(--muted); font-size: 19px; }
+section { margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); }
+table { width: 100%; border-collapse: collapse; } th, td { border-bottom: 1px solid var(--line); padding: 8px; text-align: left; vertical-align: top; }
+.cols { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.wf { border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); padding: 16px; font-size: 13px; }
+.box { border: 1px dashed var(--line); border-radius: 10px; padding: 8px; color: var(--muted); }
+code { background: color-mix(in srgb, var(--line) 50%, transparent); padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Home sections: About, Projects, Tech Stack, Contact</h1>
+  <p class="lede">One shared section header, gentle reveal-on-scroll, a cursor spotlight on project cards, and clearer layouts for the About and Contact sections.</p>
+
+  <section>
+    <h2>Why</h2>
+    <p>The four home sections are static text blocks with plain headings and no motion. The About section is only one paragraph and a button. In the Contact section, the social links sit in a separate card under the form, which feels disconnected.</p>
+    <p><strong>Motion rules:</strong></p>
+    <ul>
+      <li>Keep motion small and purposeful.</li>
+      <li>Play each animation once.</li>
+      <li>Turn motion off when the visitor has turned it off on their device.</li>
+      <li>Never hide content if JavaScript fails to load.</li>
+    </ul>
+  </section>
+
+  <section class="cols">
+    <div class="wf"><b>About</b><br /><small>01 — About me</small><br />Creating products that are easy to use…
+      <div style="display:flex;gap:10px;margin-top:8px"><div style="flex:1.2">Bio… [UI/UX] [Web] [Mobile]<br />More about me →</div><div class="box" style="flex:1">Experience list</div></div></div>
+    <div class="wf"><b>Contact</b><br /><small>04 — Contact</small>
+      <div style="display:flex;gap:10px;margin-top:8px"><div style="flex:1">Let's work together<br />GitHub ↗ LinkedIn ↗</div><div class="box" style="flex:1.3">Form panel</div></div></div>
+  </section>
+
+  <section>
+    <h2>Changes</h2>
+    <table>
+      <tr><td>All four sections</td><td>New shared SectionHeader: a styled "01 — About me" label, a SplitText heading, and intro text. Content fades and rises in once as it scrolls into view.</td></tr>
+      <tr><td>About</td><td>Two columns: the bio with skill chips and a "More about me" link, plus a recent experience list from <code>profile.experience</code> that highlights on hover.</td></tr>
+      <tr><td>Projects</td><td>Cards appear one after another. A soft cursor spotlight on project cards. The tab content fades in when you switch tabs. The Design and UI/UX cards lift and zoom like the project cards.</td></tr>
+      <tr><td>Tech Stack</td><td>Groups appear one after another. Tech tiles lift and their icon grows on hover.</td></tr>
+      <tr><td>Contact</td><td>Two columns: the pitch and social links (the arrow slides on hover) on the left, the form in a soft panel on the right.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Files</h2>
+    <p>New files:</p>
+    <ul>
+      <li><code>src/components/reveal.tsx</code></li>
+      <li><code>src/components/spotlight.tsx</code></li>
+      <li><code>src/app/(main)/_components/section-header.tsx</code></li>
+    </ul>
+    <p>Changed files in <code>src/app/(main)/_components/</code>: <code>about-section.tsx</code>, <code>projects-section.tsx</code>, <code>project-card.tsx</code>, <code>design-category-card.tsx</code>, <code>uiux-project-card.tsx</code>, <code>tech-stack-section.tsx</code>, <code>contact-section.tsx</code>.</p>
+  </section>
+
+  <section>
+    <h2>Verification</h2>
+    <ul>
+      <li><code>tsc</code> and biome on the changed files</li>
+      <li>Tests and build, with the deleted setup file restored temporarily</li>
+      <li>Headless Edge screenshots of the home page at desktop and 375px width</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

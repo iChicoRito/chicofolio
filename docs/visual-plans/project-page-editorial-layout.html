@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clean editorial layout for /projects/[id]</title>
+  <!-- Live visual plan: https://plan.agent-native.com/plans/plan-7b58432c2e0544c8 -->
+  <style>
+:root { color-scheme: light dark; --bg: #fbfaf8; --paper: #fff; --line: #dedbd5; --text: #191918; --muted: #68645f; }
+@media (prefers-color-scheme: dark) { :root { --bg: #1f1e1d; --paper: #22211f; --line: #393735; --text: #f3f2ef; --muted: #aaa6a0; } }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; line-height: 1.55; }
+main { width: min(1040px, calc(100vw - 32px)); margin: 0 auto; padding: 56px 0 96px; }
+h1 { font-size: clamp(30px, 5vw, 52px); line-height: 1.05; margin: 0 0 12px; }
+.lede { color: var(--muted); font-size: 19px; }
+section { margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line); }
+table { width: 100%; border-collapse: collapse; } th, td { border-bottom: 1px solid var(--line); padding: 8px; text-align: left; vertical-align: top; }
+th { color: var(--muted); font-size: 13px; }
+.wf { border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); padding: 20px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
+.box { border: 1px dashed var(--line); border-radius: 12px; padding: 10px; color: var(--muted); }
+.row { display: flex; gap: 16px; } nav { width: 24%; font-size: 12px; border-left: 1px solid var(--line); padding-left: 8px; color: var(--muted); }
+code { background: color-mix(in srgb, var(--line) 50%, transparent); padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Clean editorial layout for /projects/[id]</h1>
+  <p class="lede">Replace mixed card widgets with one calm reading system: big hero, active side nav, label-and-text rows, soft panels, and a next-project card.</p>
+
+  <section>
+    <h2>Why</h2>
+    <p>Every section of the case-study page uses a different widget: cards, green and yellow bars, a bar chart, numbered badges, and a timeline. The text is small, and the section numbers add noise. The page reads like a component demo instead of a story.</p>
+    <p><strong>Direction:</strong> a Read-mode editorial page. It uses only a few treatments, repeated everywhere: a large hero, one text column, label-and-text rows, one soft panel style, and a side nav that shows your place.</p>
+  </section>
+
+  <section>
+    <h2>New layout</h2>
+    <div class="wf">
+      <small>← Back to projects</small>
+      <h3 style="margin:0;font-size:28px">RemindLy</h3>
+      <span>Plain one-line description of the project.</span>
+      <div class="row" style="font-size:12px"><span><b>Role</b><br />Product design</span><span><b>Outcome</b><br />Reminders stay correct</span><span><b>Stack</b><br />Flutter · Dart</span></div>
+      <div class="box" style="height:110px">banner</div>
+      <div class="row">
+        <nav><b>● What it is</b><br />The problem and the fix<br />What I did<br />…</nav>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+          <b>What it is</b><span>Lead paragraph in larger text…</span>
+          <b>The problem and the fix</b>
+          <div class="row"><div class="box" style="flex:1">Problem list</div><div class="box" style="flex:1">Fix list</div></div>
+          <b>Tech Stack</b><small>Flutter and Dart │ the app screens… <br />Hive │ saving tasks…</small>
+          <div class="box">[next banner] Next project: Spillr →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Section treatments</h2>
+    <p>The parsing logic and the data stay the same. Only how each section is shown changes.</p>
+    <table>
+      <thead><tr><th>Section</th><th>Now</th><th>New</th></tr></thead>
+      <tbody>
+        <tr><td>What it is</td><td>Plain text</td><td>First paragraph in larger text, the rest in normal text</td></tr>
+        <tr><td>The problem and the fix</td><td>Two cards</td><td>Two soft panels, side by side</td></tr>
+        <tr><td>What I did</td><td>Check list</td><td>Two-column check list with more space</td></tr>
+        <tr><td>How I designed it</td><td>Card with colored bars and badges</td><td>Numbered rows: title, detail, neutral tag</td></tr>
+        <tr><td>Main features</td><td>Six numbered cards</td><td>Two-column items separated by a top line, no boxes</td></tr>
+        <tr><td>Tech Stack</td><td>Card list</td><td>Rows: name on the left, what it does on the right</td></tr>
+        <tr><td>Hard parts</td><td>Lines on the left edge</td><td>Same label-and-text rows as Tech Stack</td></tr>
+        <tr><td>How it works</td><td>Timeline</td><td>Timeline kept, with cleaner type</td></tr>
+        <tr><td>Results</td><td>Card</td><td>Soft panel with a check list</td></tr>
+        <tr><td>What I learned</td><td>Bar chart card</td><td>Three columns: What worked, What could improve, Future ideas</td></tr>
+        <tr><td>End of page</td><td>Small row</td><td>Large next-project card with its banner, clickable, zooms on hover</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Files</h2>
+    <ul>
+      <li><code>src/app/(main)/projects/[id]/page.tsx</code>: modified. New layout; drops section numbers, cards, and the chart.</li>
+      <li><code>src/app/(main)/projects/[id]/_components/section-nav.tsx</code>: added. Client side nav that highlights the section you are reading, using IntersectionObserver.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Verification</h2>
+    <ul>
+      <li><code>npx tsc --noEmit</code> and biome check on the changed files</li>
+      <li>Tests and build, with the deleted setup file restored temporarily</li>
+      <li>Headless Edge screenshots of /projects/7 and /projects/10, at desktop and 375px</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

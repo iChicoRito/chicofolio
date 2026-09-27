@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 
+import TiltedCard from "@/components/tilted-card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { designCategories } from "@/data/design-categories";
@@ -59,17 +60,14 @@ export default async function DesignGalleryPage({ params }: { params: Promise<{ 
                     <button
                       type="button"
                       aria-label={`Open ${project.title} fullscreen`}
-                      className="group/design-card relative block w-full overflow-hidden rounded-xl bg-card text-left outline-none ring-1 ring-foreground/10 transition-shadow hover:shadow-md focus-visible:ring-3 focus-visible:ring-ring/50"
+                      className={`relative block w-full cursor-zoom-in rounded-xl text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50 ${tileAspect}`}
                     >
-                      <div className={`relative overflow-hidden rounded-xl bg-muted/50 ${tileAspect}`}>
-                        <Image
-                          src={project.src}
-                          alt={project.alt}
-                          fill
-                          sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
-                          className="object-cover transition-transform duration-300 group-hover/design-card:scale-105"
-                        />
-                      </div>
+                      <TiltedCard
+                        imageSrc={project.src}
+                        altText={project.alt}
+                        captionText={project.title}
+                        sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      />
                     </button>
                   </DialogTrigger>
                   <DialogContent

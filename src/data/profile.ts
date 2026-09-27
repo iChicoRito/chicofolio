@@ -18,7 +18,7 @@ export const profile = {
       href: "https://www.appbuildersph.com/makers/iChicoRito",
     },
   ],
-  bio: "I'm a multidisciplinary designer and full-stack developer focused on creating clean, functional, and user-friendly digital products. I work across graphic design, UI/UX, web and mobile development, and also handle simple AI automations to streamline basic tasks and workflows. I enjoy combining design and development to turn ideas into polished products that look good, work well, and solve real problems.",
+  bio: "I’m a specialized designer and full-stack developer passionate about building clean, functional and user-friendly digital products. I do graphic design, UI/UX, web and mobile development, and play around with simple AI automations to make daily tasks and workflows much easier. I excel at combining design and development to convert ideas to polished products that look good, work well and solve real problems.",
   aboutDetails:
     "Hi, I'm passionate about creating digital experiences that are intuitive, useful, and enjoyable to use. I work across graphic design, UI/UX, and full-stack development, building both web and mobile applications with modern technologies. Being involved in both design and development allows me to take ideas from early concepts to polished, fully deployed products while keeping the user experience at the center of every decision.",
   experience: [

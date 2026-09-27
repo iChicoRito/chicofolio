@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Redesign /projects pages with plain language and SplitText headers</title>
+  <!-- Live visual plan: https://plan.agent-native.com/plans/plan-5df69455ecef4975 -->
+  <style>
+:root { color-scheme: light dark; --bg: #fbfaf8; --paper: #ffffff; --line: #dedbd5; --text: #191918; --muted: #68645f; --accent: #3f7cff; --risk: #b5503a; --code-bg: #f4f4f2; }
+@media (prefers-color-scheme: dark) { :root { --bg: #1f1e1d; --paper: #22211f; --line: #393735; --text: #f3f2ef; --muted: #aaa6a0; --code-bg: #171615; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.55; }
+main { width: min(1120px, calc(100vw - 32px)); margin: 0 auto; padding: 56px 0 96px; }
+.kicker { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(32px, 5vw, 60px); line-height: 1; letter-spacing: -.03em; }
+.lede { color: var(--muted); font-size: 20px; max-width: 820px; }
+section { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); }
+h2 { margin: 0 0 14px; font-size: 26px; letter-spacing: -.02em; }
+p, li { max-width: 840px; }
+code { font-family: "SFMono-Regular", Consolas, monospace; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; font-size: .9em; }
+table { width: 100%; border-collapse: collapse; }
+th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { color: var(--muted); font-size: 13px; }
+.cols { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.wf { border: 1.5px solid var(--line); border-radius: 14px; background: var(--paper); padding: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+.wf .box { border: 1px dashed var(--line); border-radius: 8px; padding: 10px; color: var(--muted); }
+.wf .row { display: flex; gap: 12px; }
+.wf nav { width: 38%; font-size: 12px; color: var(--muted); }
+.cap { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.callout { border-left: 3px solid var(--risk); background: var(--paper); padding: 14px 18px; border-radius: 0 10px 10px 0; }
+.added { color: #2f8f5b; } .modified { color: var(--accent); }
+ul.check { list-style: none; padding: 0; } ul.check li::before { content: "☐ "; color: var(--muted); }
+  </style>
+</head>
+<body>
+<main>
+  <p class="kicker">Visual Plan · T-04</p>
+  <h1>Redesign /projects pages with plain language and SplitText headers</h1>
+  <p class="lede">Better layout on /projects and /projects/[id], plain-English case studies (tech names kept), animated SplitText headers.</p>
+
+  <section>
+    <h2>Context</h2>
+    <p>Task T-04 asks for a better layout, design, and UI/UX on every <code>/projects/*</code> page. It also asks for plain English everywhere except tech-stack names, and React Bits <code>SplitText</code> for text headers.</p>
+    <p>Today the case-study copy is full of jargon: <em>deterministic</em>, <em>role-scoped</em>, <em>lifecycle</em>, <em>persistence</em>, <em>server-enforced boundaries</em>. The case-study page also has layout issues:</p>
+    <ul>
+      <li>The banner is hidden inside the Overview card.</li>
+      <li>Tags show twice.</li>
+      <li>Some text is cut off by <code>truncate</code>.</li>
+      <li>Two arrow icons look like links but do nothing.</li>
+    </ul>
+    <p><strong>Decisions made:</strong> the shared sections (<code>ProjectsSection</code>, <code>TechStackSection</code>, <code>ProjectCard</code>) are redesigned too, so the home page gets the same upgrade. All case-study text in <code>src/data/projects.ts</code> is rewritten in full.</p>
+  </section>
+
+  <section>
+    <h2>Case-study page: before and after</h2>
+    <div class="cols">
+      <div>
+        <h3>Before</h3>
+        <div class="wf">
+          <small>← Back to projects</small><small>CASE STUDY</small>
+          <strong>Qyzen Learning Platform</strong>
+          <span>Role-based learning platform for academic institutions…</span>
+          <span>[Laravel] [PHP] [MySQL]</span>
+          <div class="row">
+            <nav>01 Project Overview<br />02 Problem and Solution<br />03 Role &amp; Responsibilities<br />…</nav>
+            <div style="flex:1"><b>01 Project Overview</b><div class="box">banner</div><small>Tech Stack: [Laravel] [PHP] [MySQL]</small></div>
+          </div>
+        </div>
+        <p class="cap">Banner buried in the Overview card, tags repeated, jargon labels.</p>
+      </div>
+      <div>
+        <h3>After</h3>
+        <div class="wf">
+          <small>← Back to projects</small><small>PROJECT STORY</small>
+          <strong>Q·y·z·e·n Learning Platform <small>(SplitText)</small></strong>
+          <span>One place where school admins, teachers, and students share classes, tests, and grades.</span>
+          <span>[Laravel] [PHP] [MySQL]</span>
+          <div class="box">wide banner (light/dark)</div>
+          <div class="row">
+            <nav>01 What it is<br />02 The problem and the fix<br />03 What I did<br />…</nav>
+            <div style="flex:1"><b>01 What it is</b><br /><small>Plain overview text, no repeated tags.</small></div>
+          </div>
+          <div style="text-align:right"><span class="box">Next project →</span></div>
+        </div>
+        <p class="cap">Banner in the hero, animated title, plain section names, next-project link.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Steps</h2>
+    <ol>
+      <li><strong>Install SplitText.</strong> Run <code>npx shadcn@latest add @react-bits/SplitText-JS-CSS</code>. If the CLI does not know the registry, add <code>"@react-bits": "https://reactbits.dev/r/{name}.json"</code> to <code>components.json</code> → <code>registries</code> and run it again. This adds <code>gsap</code> and <code>@gsap/react</code>.
+        <ul>
+          <li>Read the generated file before using it.</li>
+          <li>Add <code>prefers-reduced-motion</code> support: the text shows at once, with no animation.</li>
+          <li>Set <code>aria-label</code> on the header and hide the split letters from screen readers, so they read the whole text, not single letters.</li>
+        </ul>
+      </li>
+      <li><strong>Use SplitText for headers.</strong> Replace these headers with SplitText:
+        <ul>
+          <li>"Featured work"</li>
+          <li>"Design &amp; Development Stacks"</li>
+          <li>the project title (<code>h1</code>)</li>
+          <li>each case-study section heading (<code>h2</code>)</li>
+        </ul>
+        Each header plays once when it scrolls into view.
+      </li>
+      <li><strong>Redesign the case-study page.</strong> Keep the structure and the parsing logic. Make these changes:
+        <ul>
+          <li>Move the banner into the hero.</li>
+          <li>Remove the duplicate tags.</li>
+          <li>Remove <code>truncate</code> so text wraps.</li>
+          <li>Remove the arrows that are not links.</li>
+          <li>Use plain section labels.</li>
+          <li>Add a <strong>Next project</strong> link that wraps from the last project to the first.</li>
+        </ul>
+      </li>
+      <li><strong>Update the index and shared sections.</strong> Use plain intro copy. Rename the "Case study" button to "Read the story". Make small spacing fixes only.</li>
+      <li><strong>Rewrite the copy</strong> in <code>src/data/projects.ts</code>. Cover all 5 projects and the placeholder. Keep tech names, numbers, and facts. Keep the text format the page parses (see below).</li>
+      <li><strong>Add one check</strong>, <code>src/data/projects.test.ts</code>. It confirms that the rewritten copy still matches the format the page parses.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Plain section labels</h2>
+    <p>The section keys and anchors stay the same. Only the visible names change.</p>
+    <table>
+      <thead><tr><th>Now</th><th>New</th></tr></thead>
+      <tbody>
+        <tr><td>Project Overview</td><td>What it is</td></tr>
+        <tr><td>Problem and Solution</td><td>The problem and the fix</td></tr>
+        <tr><td>Role &amp; Responsibilities</td><td>What I did</td></tr>
+        <tr><td>Design Process</td><td>How I designed it</td></tr>
+        <tr><td>Key Features</td><td>Main features</td></tr>
+        <tr><td>Tech Stack</td><td>Tech Stack (unchanged)</td></tr>
+        <tr><td>Challenges &amp; Solutions</td><td>Hard parts and how I solved them</td></tr>
+        <tr><td>Final Product</td><td>How it works</td></tr>
+        <tr><td>Results / Outcome</td><td>Results</td></tr>
+        <tr><td>Lessons Learned</td><td>What I learned</td></tr>
+        <tr><td>Case Study (eyebrow)</td><td>Project story</td></tr>
+        <tr><td>Delivered outcomes</td><td>What it does now</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="callout">
+      <p><strong>The copy rewrite must keep the text format the page parses.</strong></p>
+      <ul>
+        <li>Blocks are separated by <code>\n\n</code>, and the first line of a block is its title.</li>
+        <li><code>role</code> uses <code>- </code> bullet lines.</li>
+        <li><code>techStack</code> rows use the form <code>- Name — description</code>, with a real em dash.</li>
+        <li>The first block of <code>results</code> is made of <code>- </code> lines. The page hides the RemindLy line that starts with "On August 17".</li>
+        <li>In <code>finalProduct</code>, the first sentence of each block becomes its title.</li>
+      </ul>
+      <p>The new <code>projects.test.ts</code> catches a section that ends up empty.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Files touched</h2>
+    <table>
+      <thead><tr><th>File</th><th>Change</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td><code>src/app/(main)/projects/[id]/page.tsx</code></td><td class="modified">modified</td><td>Hero banner, SplitText headers, plain labels, no truncate, next-project link</td></tr>
+        <tr><td><code>src/app/(main)/_components/projects-section.tsx</code></td><td class="modified">modified</td><td>SplitText header, plain intro</td></tr>
+        <tr><td><code>src/app/(main)/_components/tech-stack-section.tsx</code></td><td class="modified">modified</td><td>SplitText header, plain intro</td></tr>
+        <tr><td><code>src/app/(main)/_components/project-card.tsx</code></td><td class="modified">modified</td><td>Plain button label</td></tr>
+        <tr><td><code>src/data/projects.ts</code></td><td class="modified">modified</td><td>Full plain-English rewrite</td></tr>
+        <tr><td><code>src/data/projects.test.ts</code></td><td class="added">added</td><td>Checks the text format the page parses</td></tr>
+        <tr><td><code>src/components/SplitText.jsx</code></td><td class="added">added</td><td>From the shadcn CLI; adds reduced-motion support and screen-reader text</td></tr>
+        <tr><td><code>components.json</code></td><td class="modified">modified</td><td>Adds the @react-bits registry, only if needed</td></tr>
+        <tr><td><code>package.json</code></td><td class="modified">modified</td><td>gsap, @gsap/react</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Skipped</h2>
+    <ul>
+      <li>Active-section highlight in the side nav. It needs client scroll JS. Add it only if asked.</li>
+      <li>Changes to the design and UIUX tab grids. They are not <code>/projects/*</code> pages of their own.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Verification</h2>
+    <ul class="check">
+      <li><code>npm test</code> (includes <code>projects.test.ts</code>)</li>
+      <li><code>npx tsc --noEmit</code></li>
+      <li><code>npm run check</code></li>
+      <li><code>npm run build</code></li>
+      <li>Puppeteer screenshots of /projects, /projects/7, and /projects/10 in light and dark mode, at 375px and desktop width. Check header animation, reduced motion, that no text is cut off, the Qyzen light/dark banner, and that the next-project link wraps.</li>
+      <li>Read the rewritten copy once more for leftover jargon</li>
+      <li>Report what was not checked (<code>tests/portfolio-smoke.mjs</code> does not exist)</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

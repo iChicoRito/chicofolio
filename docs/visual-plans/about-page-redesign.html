@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About page redesign</title>
+  <style>
+:root { color-scheme: light dark; --bg: #fbfaf8; --paper: #fff; --line: #dedbd5; --text: #191918; --muted: #68645f; }
+@media (prefers-color-scheme: dark) { :root { --bg: #1f1e1d; --paper: #22211f; --line: #393735; --text: #f3f2ef; --muted: #aaa6a0; } }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; line-height: 1.55; }
+main { width: min(960px, calc(100vw - 32px)); margin: 0 auto; padding: 56px 0 96px; }
+h1 { font-size: clamp(28px, 5vw, 44px); margin: 0 0 12px; }
+section { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+.wf { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px; font-size: 13px; display: flex; flex-direction: column; gap: 10px; }
+.box { border: 1px dashed var(--line); border-radius: 10px; padding: 8px; color: var(--muted); }
+.row { display: flex; gap: 12px; } .muted { color: var(--muted); }
+table { width: 100%; border-collapse: collapse; } td { border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; }
+code { background: color-mix(in srgb, var(--line) 50%, transparent); padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>About page redesign</h1>
+  <p class="muted">Bring /about into the same system as the project pages: a hero with a tilting photo, a facts strip, experience rows, and a closing call to action.</p>
+
+  <section>
+    <h2>Layout</h2>
+    <div class="wf">
+      <small>← Back</small>
+      <div class="row">
+        <div class="box" style="width:120px;height:120px">tilting photo</div>
+        <div><b style="font-size:22px">Mark Adrianne Salunga</b><br />Product designer and full-stack developer…<br /><span class="muted">Cavite · Available</span><br />[Get in touch] [Download resume]</div>
+      </div>
+      <div class="box">Based in │ Focus │ Education │ Status</div>
+      <p>About paragraph (larger text)</p>
+      <b>01 — Work experience</b>
+      <div class="box">2024–2026 · NCST │ College IT Instructor + points</div>
+      <b>02 — AI practice</b>
+      <div class="box">2026–Present │ Agentic Workflows + points</div>
+      <b>03 — Education</b>
+      <div class="box">BS Information Technology · NCST · 2024</div>
+      <div class="box">Let's work together → (card linking to /#contact)</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Changes</h2>
+    <table>
+      <tr><td>Hero</td><td>The photo uses the same TiltedCard and glare as the project icon. It sits next to the name as the heading (with the SplitText animation), a short role line, location and availability, and two buttons.</td></tr>
+      <tr><td>Facts strip</td><td>Same style as the project Role / Outcome / Stack box, filled from <code>profile</code> data only.</td></tr>
+      <tr><td>Experience</td><td>Timeline rows: the period and place on the left, the role and points on the right. They fade in as you scroll. The same row style is used for work and for AI practice.</td></tr>
+      <tr><td>Education</td><td>A soft panel.</td></tr>
+      <tr><td>End of page</td><td>A large "Let's work together" card that lifts and slides its arrow on hover.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Files and checks</h2>
+    <p>File: <code>src/app/(main)/about/page.tsx</code>. It reuses <code>SectionHeader</code>, <code>TiltedCard</code>, <code>SplitText</code>, and the <code>reveal</code> CSS.</p>
+    <p>Checks: tsc, biome, tests, build, and screenshots at desktop and phone width.</p>
+  </section>
+</main>
+</body>
+</html>
