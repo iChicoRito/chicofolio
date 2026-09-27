@@ -1,71 +1,68 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Project
+
+Personal portfolio website built on a Next.js.
+
+* Next.js 16, React 19, TypeScript
+* Tailwind CSS 4, shadcn/ui (Radix, Base UI)
+* Zustand for state, React Hook Form + Zod for forms
+* Resend for the contact form
+* Biome for lint and format, Vitest + Testing Library for tests
+* Source in `src/`, static files in `public/`, docs in `docs/`
 
 ## Commands
 
-```bash
-npm run dev                # dev server on :3000
-npm run build              # next build
-npm run check:fix          # biome: lint + format + organize imports, autofix (use this before committing)
-npm run check              # same, report only
-npm run generate:presets   # regenerate theme preset metadata into src/lib/preferences/theme.ts
-```
+* `npm run dev`: start the dev server
+* `npm run build`: production build
+* `npm test`: run Vitest tests
+* `npm run test:portfolio`: portfolio smoke test
+* `npm run lint`: Biome lint
+* `npm run check` / `npm run check:fix`: Biome check (and fix)
+* `npm run format`: Biome format
+* `npx tsc --noEmit`: type check
 
-No test framework is configured — there is no test runner, no test files. Don't invent one unless asked.
+## Rules
 
-Husky `pre-commit` runs `generate:presets`, stages `src/lib/preferences/theme.ts`, then `lint-staged` (biome autofix on staged JS/TS). A biome error blocks the commit.
+### 1. Plan first
 
-## Architecture
+For any task bigger than a small fix:
 
-Next.js 16 App Router, React 19 + React Compiler (`reactCompiler: true`), Tailwind v4 (CSS-first, no tailwind config file), shadcn/ui, TypeScript strict. Alias `@/*` → `src/*`.
+1. Understand the goal and read the code it touches.
+2. Write a short plan: what changes, which files, which skills or plugins are needed.
+3. Check that the plan is not over-engineered.
+4. Use the `visual-plan` skill to create a visual version of the plan. Save it in `docs/visual-plans` with a file name that describes the task.
+5. Implement. Keep the code as simple as the plan.
 
-### Colocation routing
+Small fixes (typos, one-line changes, simple questions) skip the plan and the visual plan.
 
-Routes live under `src/app/(main)/…`; each route folder owns its own `_components/`, and only genuinely shared UI goes to `src/components/`. `src/components/ui/` is shadcn-generated and **excluded from biome** — don't hand-format it, regenerate via shadcn instead. `/dashboard` redirects to `/dashboard/default` (next.config.mjs). `(legacy)` route group holds v1 dashboard variants kept for reference.
+### 2. Keep it simple and focused
 
-### Preferences system (theme, fonts, layout) — the core non-obvious piece
+* Do only what the user asked. The latest instruction wins.
+* Prefer the smallest change that correctly solves the task.
+* Reuse existing code and project patterns before writing new code.
+* Do not add abstractions, layers, features, or libraries without a clear need.
+* Do not change, clean up, or restructure unrelated code.
+* Keep existing working behavior unless the task requires a change.
 
-Every preference is expressed as a `data-*` attribute on `<html>`; CSS reacts to those attributes. Four layers must stay in sync:
+### 3. Skills and plugins
 
-1. `src/lib/preferences/preferences-config.ts` — single source of truth: `PreferenceValueMap` (key → type), `PREFERENCE_DEFAULTS`, `PREFERENCE_PERSISTENCE` (per key: `client-cookie` | `server-cookie` | `localStorage` | `none`). Keys in `LAYOUT_CRITICAL_KEYS` (`sidebar_variant`, `sidebar_collapsible`) are type-forbidden from `localStorage` because SSR reads them.
-2. `src/scripts/theme-boot.tsx` — inline `<script>` in `<head>` that reads cookies/localStorage and stamps the `data-*` attributes + `.dark` class before hydration. This is why `src/app/layout.tsx` can render `PREFERENCE_DEFAULTS` statically and stay fully static — no flicker, no per-request rerender.
-3. `src/stores/preferences/` — zustand vanilla store + provider. The provider reads the already-stamped DOM back into the store on mount (`readDomState`) and owns the `system` theme media-query subscription.
-4. `src/lib/preferences/preferences-storage.ts` — `persistPreference(key, value)` dispatches on the configured persistence mode.
+Use a skill or plugin only when it directly helps the current task. Do not load one just because it is available.
 
-A preference change from a UI control does three things: `setX()` on the store, `applyX()` from `theme-utils.ts` / `layout-utils.ts` to write the DOM attribute, and `persistPreference()`. See `theme-switcher.tsx` for the canonical pattern.
+### 4. Git
 
-Server side, layout-critical prefs are read with `getPreference(key, allowedValues, fallback)` from `src/server/server-actions.ts` (validates against the allowed list) — used in the dashboard layout to pass sidebar `variant`/`collapsible` into `AppSidebar`.
+* Never commit unless the user asks.
+* Commit messages contain only the approved message. No `Co-Authored-By`, no Claude or AI author lines, no other author changes.
 
-Adding a preference means touching all four layers plus the option list in `layout.ts`/`theme.ts` and the CSS that reads the attribute in `globals.css`.
+### 5. Check work before finishing
 
-### Theme presets
+* Review the changes for mistakes.
+* Run the checks that match the change:
+  * `npm test` and `npx tsc --noEmit`.
+  * `npm run check` for lint and format.
+* Say clearly what was not checked.
+* Never claim something works without checking it when checking was possible.
 
-Each preset is one CSS file in `src/styles/presets/` overriding CSS variables under `:root[data-theme-preset="x"]` and `.dark:root[data-theme-preset="x"]`, with a header comment carrying `label:` and `value:`. The `default` preset has no file — it's the base `:root` / `.dark` blocks in `src/app/globals.css`.
+### 6. Plain language
 
-Adding a preset: create the CSS file (header comment required), `@import` it in `globals.css`, then run `npm run generate:presets`. That script scrapes labels/values/`--primary` and rewrites the block between `// --- generated:themePresets:start ---` and `:end ---` in `src/lib/preferences/theme.ts`. **Never edit that block by hand.**
-
-### Fonts
-
-`src/lib/fonts/registry.ts` registers every `next/font` instance and derives `fontVars` (all CSS variables, applied to `<body>`) and `fontOptions`. Selection works by `html[data-font="key"] body { font-family: … }` rules in `globals.css` — adding a font means registry entry + matching CSS rule.
-
-### Navigation
-
-`src/navigation/sidebar/sidebar-items.ts` is a typed config array (`NavGroup` → `NavMainItem`, discriminated on `url` vs `subItems`). Sidebar UI renders from it; add routes here, not in the sidebar components.
-
-## Conventions
-
-- Biome enforces `useFilenamingConvention` (kebab-case), sorted Tailwind classes, no floating/misused promises, no import cycles, and a fixed import group order (react → next → packages → `@/` aliases → relative). Run `npm run check:fix` rather than fighting it manually.
-- Line width 120, double quotes, semicolons, trailing commas, 2-space indent.
-- Prefer real types over `any`; conventional commit prefixes (`feat:`, `fix:`, `chore:`).
-- Data in `src/data/` is mock/demo data — there is no backend or database in this template.
-
-<!-- BEGIN:nextjs-agent-rules -->
-
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
+Use simple, clear words. Keep explanations short. Explain any technical term that is needed.

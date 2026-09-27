@@ -107,6 +107,28 @@ function ProjectBanner({ project, sizes, className }: { project: Project; sizes:
     );
   }
   const src = project.banner ?? project.coverImage;
+  if (!src && project.image) {
+    return (
+      <>
+        <Image
+          src={project.image}
+          alt=""
+          fill
+          sizes="160px"
+          className={`object-contain p-[18%] ${project.imageDark ? "dark:hidden" : ""}`}
+        />
+        {project.imageDark ? (
+          <Image
+            src={project.imageDark}
+            alt=""
+            fill
+            sizes="160px"
+            className="hidden object-contain p-[18%] dark:block"
+          />
+        ) : null}
+      </>
+    );
+  }
   if (!src) return <OverviewIcon icon={project.icon} />;
   return (
     <Image src={src} alt={`${project.title} banner`} fill sizes={sizes} className={`object-cover ${className ?? ""}`} />
@@ -221,9 +243,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
       ),
     },
   ];
-  const externalAction = project.liveUrl
-    ? { label: "Live demo", href: project.liveUrl }
-    : { label: "View repository", href: project.repositoryUrl };
+  const externalHref = project.liveUrl ?? project.repositoryUrl;
+  const externalLabel = project.liveUrl ? "Live demo" : "View repository";
+  const hasBanner = Boolean(project.banner || project.bannerDark || project.coverImage);
 
   const content: Partial<Record<(typeof sections)[number]["key"], ReactNode>> = {
     overview: (
@@ -450,11 +472,20 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                   alt={`${project.title} icon`}
                   width={160}
                   height={160}
-                  className="absolute inset-0 size-full object-cover"
+                  className={`absolute inset-0 size-full object-cover ${project.imageDark ? "dark:hidden" : ""}`}
                 />
               ) : (
                 <SimpleIcon icon={project.icon} className="size-12 md:size-16" />
               )}
+              {project.image && project.imageDark && project.id !== 10 ? (
+                <Image
+                  src={project.imageDark}
+                  alt={`${project.title} icon`}
+                  width={160}
+                  height={160}
+                  className="absolute inset-0 hidden size-full object-cover dark:block"
+                />
+              ) : null}
             </TiltedCard>
             <div className="flex min-w-0 flex-col sm:min-h-40 sm:justify-between md:min-h-44">
               <SplitText
@@ -470,13 +501,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 {project.description}
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <Button asChild size="lg">
-                  <a href={externalAction.href} target="_blank" rel="noopener noreferrer">
-                    {externalAction.label}
-                    <ExternalLink />
-                  </a>
-                </Button>
-                {project.liveUrl ? (
+                {externalHref ? (
+                  <Button asChild size="lg">
+                    <a href={externalHref} target="_blank" rel="noopener noreferrer">
+                      {externalLabel}
+                      <ExternalLink />
+                    </a>
+                  </Button>
+                ) : null}
+                {project.liveUrl && project.repositoryUrl ? (
                   <Button asChild size="lg" variant="outline">
                     <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
                       View repository
@@ -506,13 +539,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
             ))}
           </dl>
 
-          <div className="group/banner relative mt-10 flex aspect-2/1 items-center justify-center overflow-hidden rounded-2xl bg-muted/50 ring-1 ring-border">
-            <ProjectBanner
-              project={project}
-              sizes="(min-width: 1152px) 1088px, 100vw"
-              className="transition-transform duration-700 ease-out motion-safe:group-hover/banner:scale-[1.02]"
-            />
-          </div>
+          {hasBanner ? (
+            <div className="group/banner relative mt-10 flex aspect-2/1 items-center justify-center overflow-hidden rounded-2xl bg-muted/50 ring-1 ring-border">
+              <ProjectBanner
+                project={project}
+                sizes="(min-width: 1152px) 1088px, 100vw"
+                className="transition-transform duration-700 ease-out motion-safe:group-hover/banner:scale-[1.02]"
+              />
+            </div>
+          ) : null}
 
           <nav aria-label="Project sections" className="-mx-4 mt-12 overflow-x-auto border-border border-y md:hidden">
             <div className="flex w-max gap-1 px-4 py-2">

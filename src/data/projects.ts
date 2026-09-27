@@ -1,5 +1,5 @@
 import type { SimpleIcon as SimpleIconType } from "simple-icons";
-import { siExpo, siLaravel, siMarkdown, siRocket, siTodoist } from "simple-icons";
+import { siExpo, siLaravel, siMarkdown, siRocket, siTauri, siTodoist } from "simple-icons";
 
 export interface CaseStudyNote {
   title: string;
@@ -37,9 +37,11 @@ export interface Project {
   outcome: string;
   tags: string[];
   icon: SimpleIconType;
-  repositoryUrl: string;
+  repositoryUrl?: string;
   liveUrl?: string;
   image?: string;
+  /** Icon for dark mode, when `image` is too dark on a dark background. */
+  imageDark?: string;
   coverImage?: string;
   banner?: string;
   bannerDark?: string;
@@ -509,6 +511,63 @@ export const projects: Project[] = [
           title: "Only skip what is empty",
           detail: "List sections with nothing in them are dropped, so there are no empty headings",
           badge: "Clarity",
+        },
+      ],
+    },
+  },
+  {
+    id: 12,
+    title: "Kivo",
+    description:
+      "Kivo is a local-first desktop app for keeping notes, files, useful links, and personal information in one place.",
+    role: "Product design + full-stack development",
+    outcome: "One private vault on your own device for notes, files, links, and passwords.",
+    tags: ["Tauri", "React", "Rust"],
+    icon: siTauri,
+    image: "/assets/kivo/Logo - Blue.png",
+    imageDark: "/assets/kivo/Logo - White.png",
+    banner: "/assets/banner/Banner - Kivo.png",
+    caseStudy: {
+      overview:
+        "Kivo is a local-first desktop app for keeping notes, files, useful links, and personal information in one place. It is made for people who want to organize their digital things with their own device as the main place they are stored.\n\nThis case study covers the desktop app, including organizing content, search, the Password Manager, and backup tools.",
+      problem:
+        "Notes, documents, and saved links tend to end up scattered, with no common place to store and find them again. This is the problem the project set out to solve; it is not based on user research.",
+      solution:
+        "Kivo brings these things into one local vault. Collections and tags keep things organized, while Favorites and search make them quicker to find. Backup, restore, and export tools give people ways to keep their information safe or move it elsewhere.\n\nCloud sync is outside the core scope.",
+      role: "- Interface design for setup, content pages, search, and settings.\n- Frontend development with React 19 and TypeScript.\n- Rust backend for storage, file handling, search, protection, and recovery.\n- Database migrations and automated tests.",
+      designProcess: "The design aims for a simple, easy-to-navigate personal vault.",
+      keyFeatures:
+        "Notes\nRich-text editing, automatic saving, and version history you can restore from.\n\nSources and files\nSave useful links, import files into managed local storage, and preview supported file types.\n\nOrganization\nGroup items into collections, add tags, mark favorites, and recover items from the trash.\n\nSearch\nFind items by their details and indexed content, including text pulled from PDFs. Encryption limits what content can be indexed.\n\nPassword Manager\nStore logins behind a separate password and lock.\n\nProtection and recovery\nOptional field encryption, local backups, checked restores, and Markdown or JSON export tools.\n\nLocal discovery tools\nOptional related-item matching, tag suggestions, and short summaries use text processing on your device, not a cloud language model.",
+      techStack:
+        "The story above is written for everyone. This section lists the actual technologies used:\n- Tauri 2 — connects the desktop interface to native operations.\n- React 19 and TypeScript — build the screens, interactions, and frontend data contracts.\n- Vite — supports frontend development and builds.\n- Tailwind CSS 4 and HeroUI 3 — provide styling and interface components.\n- React Router — handles navigation between app screens.\n- Tiptap — powers rich-text note editing.\n- Rust — handles storage, files, search, protection, and recovery.\n- SQLite through rusqlite — stores structured app data; managed local storage holds imported files.\n- Argon2 and AES-256-GCM — support password-based key creation and authenticated encryption.\n- Vitest, Testing Library, and Rust tests — cover frontend and backend behavior.\n\nThese technologies are confirmed by the project files and source code. Their presence alone does not mean the app is ready for release.",
+      challenges:
+        "Keeping search consistent with encryption\nSearch indexes can keep information taken from protected content. Kivo clears saved content-search and related-search data when encryption is turned on, and limits indexing while protection is active.\n\nRestoring a vault without losing the current copy\nA restore replaces both the database and managed files. Kivo checks the backup before replacing anything and makes a safety copy to roll back to. Tests cover broken backups; checks for real desktop interruptions are still open.\n\nKeeping app lock separate from data protection\nHiding the screen is different from encrypting stored content. Kivo keeps app lock and the Password Manager separate, with optional encryption for selected content fields, note versions, and managed files. Titles, tags, file names, and other details stay readable, and an independent security review is still pending.\n\nAdding discovery without the cloud\nRelated search, suggestions, and summaries use text processing on the device. This fits the local-first goal, but it is not generative AI or proven understanding of meaning.",
+      finalProduct:
+        "Set up the vault. Enter profile details, choose starter collections, and optionally turn on app lock.\n\nAdd something worth keeping. Create a note, save a source, or import a file from the right page or with Quick Add.\n\nOrganize the item. Add it to a collection or tag it, and mark often-used items as favorites.\n\nFind it again. Browse content pages, use search, or open the command palette. What search can find depends on indexing and encryption settings.\n\nLook after the vault. Review storage, recover items from the trash, restore earlier note versions, and use Settings for protection, backup, and export.",
+      results:
+        "- Reviewing the source confirms connected screens and backend commands for the core vault and supporting tools.\n- Recorded checks report 543 frontend tests passing across 47 files, successful type checks and builds, and passing Rust test suites. These are earlier recorded results, not checks rerun for this write-up.\n- Windows desktop checks are still open, including protection, backup and restore, and advanced features.\n- An independent security review is still pending. Encryption covers selected data, not the whole database or every outside copy.\n- No user numbers, usability results, speed tests, or time savings are reported.",
+      lessons:
+        "What I learned\n- Local storage still needs recovery planning: keeping data on the device makes checked backups, restores, and exports an important part of the product.\n- Protection affects more than the original content: search indexes, note versions, temporary files, and backups all need clear protection rules.\n- Automated tests and desktop checks answer different questions: passing tests support specific behavior, while native file dialogs, previews, interruption recovery, and full user journeys still need checks on a real desktop.",
+      designPrinciples: [
+        {
+          title: "Guided setup",
+          detail: "Setup splits profile details, starter collections, and optional app lock into steps",
+          badge: "Setup",
+        },
+        {
+          title: "Navigation by content type",
+          detail: "Notes, Sources, Files, and Collections each have a page, with All Items showing everything",
+          badge: "Navigation",
+        },
+        {
+          title: "Quick access to common actions",
+          detail: "Quick Add, search, and the command palette support everyday saving and finding",
+          badge: "Speed",
+        },
+        {
+          title: "Advanced tools stay optional",
+          detail: "Related search, tag suggestions, and summaries are off by default",
+          badge: "Choice",
         },
       ],
     },

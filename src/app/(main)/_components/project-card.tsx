@@ -14,9 +14,8 @@ type ProjectCardProps = {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   const imageSource = project.banner ?? project.bannerDark ?? project.bannerLight ?? project.coverImage;
-  const externalAction = project.liveUrl
-    ? { label: "Live demo", href: project.liveUrl }
-    : { label: "Repository", href: project.repositoryUrl };
+  const externalHref = project.liveUrl ?? project.repositoryUrl;
+  const externalLabel = project.liveUrl ? "Live demo" : "Repository";
 
   return (
     <Spotlight className="group/card h-full rounded-2xl transition-[translate] duration-500 ease-out motion-safe:hover:-translate-y-1">
@@ -30,6 +29,25 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               sizes="(min-width: 1280px) 22rem, (min-width: 640px) calc(50vw - 2rem), calc(100vw - 2rem)"
               className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover/card:scale-105"
             />
+          ) : project.image ? (
+            <>
+              <Image
+                src={project.image}
+                alt=""
+                fill
+                sizes="160px"
+                className={`object-contain p-[18%] ${project.imageDark ? "dark:hidden" : ""}`}
+              />
+              {project.imageDark ? (
+                <Image
+                  src={project.imageDark}
+                  alt=""
+                  fill
+                  sizes="160px"
+                  className="hidden object-contain p-[18%] dark:block"
+                />
+              ) : null}
+            </>
           ) : (
             <SimpleIcon icon={project.icon} className="size-12 text-muted-foreground" />
           )}
@@ -65,16 +83,18 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               Read the story
               <ArrowRight className="size-4 transition-transform duration-300 ease-out motion-safe:group-hover/card:translate-x-1" />
             </span>
-            <a
-              href={externalAction.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${externalAction.label} for ${project.title} (opens in a new tab)`}
-              className="relative z-10 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-muted-foreground text-xs ring-1 ring-border transition-colors duration-300 ease-out hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              {externalAction.label}
-              <ExternalLink aria-hidden="true" className="size-3.5" />
-            </a>
+            {externalHref ? (
+              <a
+                href={externalHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${externalLabel} for ${project.title} (opens in a new tab)`}
+                className="relative z-10 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-muted-foreground text-xs ring-1 ring-border transition-colors duration-300 ease-out hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {externalLabel}
+                <ExternalLink aria-hidden="true" className="size-3.5" />
+              </a>
+            ) : null}
           </div>
         </div>
       </article>

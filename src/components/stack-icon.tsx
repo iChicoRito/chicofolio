@@ -9,6 +9,7 @@ import flutter from "thesvg/flutter";
 import gmail from "thesvg/gmail";
 import google from "thesvg/google";
 import groq from "thesvg/groq";
+import heroui from "thesvg/heroui";
 import html5 from "thesvg/html5";
 import javascript from "thesvg/javascript";
 import kotlin from "thesvg/kotlin";
@@ -23,13 +24,18 @@ import pusher from "thesvg/pusher";
 import pwa from "thesvg/pwa";
 import radixUi from "thesvg/radix-ui";
 import react from "thesvg/react";
+import reactRouter from "thesvg/react-router";
 import reactnative from "thesvg/reactnative";
+import rust from "thesvg/rust";
 import shadcnUi from "thesvg/shadcn-ui";
 import sqlite from "thesvg/sqlite";
 import tailwindcss from "thesvg/tailwindcss";
+import tauri from "thesvg/tauri";
+import testingLibrary from "thesvg/testing-library";
 import threejs from "thesvg/threejs";
 import typescript from "thesvg/typescript";
 import vite from "thesvg/vite";
+import vitest from "thesvg/vitest";
 import webgl from "thesvg/webgl";
 import zod from "thesvg/zod";
 
@@ -51,7 +57,7 @@ const entries: StackIconEntry[] = [
   { pattern: /\bAndroid\b/, icon: android },
   { pattern: /\bTypeScript\b/, icon: typescript },
   { pattern: /\bReact Native\b/, icon: reactnative },
-  { pattern: /\bReact\b(?! Native)/, icon: react },
+  { pattern: /\bReact\b(?! Native| Router)/, icon: react },
   { pattern: /\bExpo\b/, icon: expo, mode: "mono" },
   { pattern: /\bLottie\b/, icon: lottiefiles },
   { pattern: /\bFigma\b/, icon: figma },
@@ -77,6 +83,12 @@ const entries: StackIconEntry[] = [
   { pattern: /\bRadix\b/, icon: radixUi, mode: "mono" },
   { pattern: /\bshadcn\b/, icon: shadcnUi, mode: "mono" },
   { pattern: /\bPWA\b/, icon: pwa },
+  { pattern: /\bTauri\b/, icon: tauri },
+  { pattern: /\bRust\b/, icon: rust, mode: "themed" },
+  { pattern: /\bReact Router\b/, icon: reactRouter },
+  { pattern: /\bHeroUI\b/, icon: heroui, mode: "themed" },
+  { pattern: /\bVitest\b/, icon: vitest },
+  { pattern: /\bTesting Library\b/, icon: testingLibrary },
 ];
 
 export function findStackIcons(name: string, limit = 3) {
