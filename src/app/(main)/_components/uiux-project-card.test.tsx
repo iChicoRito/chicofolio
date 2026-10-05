@@ -33,7 +33,10 @@ describe("UiuxProjectGrid", () => {
 
     expect(screen.getByRole("link", { name: "RemindLy" })).toHaveAttribute("href", "/uiux/remindly");
     expect(screen.getByRole("link", { name: "Spillr" })).toHaveAttribute("href", "/uiux/spillr");
-    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2);
-    expect(screen.getAllByRole("link", { name: /view/i })).toHaveLength(2);
+    expect(screen.getByRole("link", { name: "PokeDen" })).toHaveAttribute("href", "/uiux/pokeden");
+    expect(screen.getByRole("link", { name: "Kivo" })).toHaveAttribute("href", "/uiux/kivo");
+    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(4);
+    expect(screen.getAllByRole("link", { name: /view/i })).toHaveLength(4);
+    expect(screen.getAllByText("Case study")).toHaveLength(2);
   });
 });

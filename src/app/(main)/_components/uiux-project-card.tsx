@@ -30,7 +30,9 @@ export default function UiuxProjectCard({ project }: UiuxProjectCardProps) {
           </span>
         </div>
         <div className="flex flex-1 flex-col px-3 pt-4 pb-2">
-          <p className="text-muted-foreground text-xs">{project.screenCount} screens</p>
+          <p className="text-muted-foreground text-xs">
+            {project.sections ? "Case study" : `${project.screenCount} screens`}
+          </p>
           <h3 className="mt-2 font-heading font-semibold text-lg leading-snug tracking-tight">
             <Link href={project.href} className="relative z-10 rounded-sm focus-visible:outline-none">
               {project.title}

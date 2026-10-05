@@ -5,14 +5,16 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 describe("uiuxProjects", () => {
-  it("has exactly the two required projects in order", () => {
-    expect(uiuxProjects.map((p) => p.slug)).toEqual(["remindly", "spillr"]);
+  it("has exactly the four required projects in order", () => {
+    expect(uiuxProjects.map((p) => p.slug)).toEqual(["remindly", "spillr", "pokeden", "kivo"]);
   });
 
   it("every project has non-empty fields, a matching href and cover, and consistent screen counts", () => {
     const expectedScreenCounts = new Map<string, number>([
       ["remindly", 23],
       ["spillr", 28],
+      ["pokeden", 13],
+      ["kivo", 11],
     ]);
     for (const project of uiuxProjects) {
       expect(project.title.length).toBeGreaterThan(0);
@@ -28,8 +30,10 @@ describe("uiuxProjects", () => {
 
   it("every cover and screen path exists on disk and screen paths live in the matching folder", () => {
     const folderBySlug = new Map<string, string>([
-      ["remindly", "/assets/remindly/"],
-      ["spillr", "/assets/spillr/"],
+      ["remindly", "/assets/case-studies/RemindLy - Case Studies/"],
+      ["spillr", "/assets/case-studies/Spillr - Case Studies/"],
+      ["pokeden", "/assets/case-studies/PokeDen - Case Study/"],
+      ["kivo", "/assets/case-studies/Kivo - Case Studies/"],
     ]);
     const seenScreens = new Set<string>();
     for (const project of uiuxProjects) {

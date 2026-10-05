@@ -42,27 +42,46 @@ export default async function UiuxProjectPage({ params }: { params: Promise<{ sl
             <p className="font-medium text-muted-foreground text-sm uppercase tracking-widest">UIUX</p>
             <h1 className="mt-3 font-heading font-semibold text-3xl tracking-tight md:text-4xl">{project.title}</h1>
             <p className="mt-4 max-w-2xl text-base text-muted-foreground">
-              {project.description} · {project.screenSrcs.length} screens
+              {project.description} · {project.sections ? "Case study" : `${project.screenSrcs.length} screens`}
             </p>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {project.screenSrcs.map((src, index) => (
-                <div
-                  key={src}
-                  className="group/screen-card relative w-full overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10 transition-shadow hover:shadow-md"
-                >
-                  <div className="relative aspect-[393/852] overflow-hidden rounded-xl bg-muted/50">
-                    <Image
-                      src={src}
-                      loading={index < 4 ? "eager" : "lazy"}
-                      alt={`${project.title} screen ${String(index + 1).padStart(2, "0")}`}
-                      fill
-                      sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-300 group-hover/screen-card:scale-105"
-                    />
+            {project.sections ? (
+              <div className="mt-12 overflow-hidden rounded-xl bg-muted/50 ring-1 ring-foreground/10">
+                {project.sections.map((section, index) => (
+                  <Image
+                    key={section.src}
+                    src={section.src}
+                    width={section.width}
+                    height={section.height}
+                    priority={index === 0}
+                    loading={index === 1 ? "eager" : undefined}
+                    quality={90}
+                    alt={`${project.title} case study, part ${index + 1}`}
+                    sizes="(min-width: 1152px) 1088px, 100vw"
+                    className="block h-auto w-full"
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {project.screenSrcs.map((src, index) => (
+                  <div
+                    key={src}
+                    className="group/screen-card relative w-full overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10 transition-shadow hover:shadow-md"
+                  >
+                    <div className="relative aspect-[393/852] overflow-hidden rounded-xl bg-muted/50">
+                      <Image
+                        src={src}
+                        loading={index < 4 ? "eager" : "lazy"}
+                        alt={`${project.title} screen ${String(index + 1).padStart(2, "0")}`}
+                        fill
+                        sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        className="object-cover transition-transform duration-300 group-hover/screen-card:scale-105"
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </main>

@@ -1,10 +1,11 @@
 import type { CSSProperties } from "react";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { projects } from "@/data/projects";
 
 import DesignProjectGrid from "./design-project-grid";
 import ProjectCard from "./project-card";
+import ProjectTabs from "./project-tabs";
 import SectionHeader from "./section-header";
 import UiuxProjectGrid from "./uiux-project-grid";
 
@@ -15,7 +16,7 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="scroll-mt-14 py-20 md:py-28">
       <div className="mx-auto w-full max-w-6xl px-4 md:px-8">
-        <Tabs defaultValue="development">
+        <ProjectTabs>
           <SectionHeader
             index="02"
             label="Projects"
@@ -44,7 +45,7 @@ export default function ProjectsSection() {
           <TabsContent value="uiux" className={tabContentMotion}>
             <UiuxProjectGrid />
           </TabsContent>
-        </Tabs>
+        </ProjectTabs>
       </div>
     </section>
   );
